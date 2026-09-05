@@ -1,0 +1,473 @@
+<title>SMART-HORIZON Sandbox</title>
+<style>
+  :root{
+    color-scheme:light;
+    --surface:#fcfcfb; --panel:#f4f3ef; --line:#e6e5e0;
+    --ink:#0b0b0b; --ink2:#52514e; --muted:#8c8b85;
+    --blue:#2a78d6; --orange:#eb6834; --aqua:#1baf7a;
+  }
+  body{background:var(--surface);color:var(--ink);
+    font:14px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    margin:0;padding:24px;}
+  .wrap{max-width:1180px;margin:0 auto}
+  h1{font-size:21px;margin:0 0 4px;letter-spacing:-.01em}
+  .sub{color:var(--ink2);font-size:13.5px;margin:0 0 20px;max-width:75ch}
+  .layout{display:grid;grid-template-columns:270px 1fr;gap:22px;align-items:start}
+  @media (max-width:860px){.layout{grid-template-columns:1fr}}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px}
+  .ctl{margin-bottom:16px}
+  .ctl label{display:flex;justify-content:space-between;font-size:12.5px;
+    color:var(--ink2);margin-bottom:5px;font-weight:500}
+  .ctl label b{color:var(--ink);font-variant-numeric:tabular-nums;font-weight:600}
+  input[type=range]{width:100%;accent-color:var(--blue);margin:0}
+  .hint{font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.4}
+  .seg{display:flex;gap:6px;margin-top:2px}
+  .seg button{flex:1;padding:7px 6px;font-size:12.5px;cursor:pointer;
+    background:var(--surface);color:var(--ink2);
+    border:1px solid var(--line);border-radius:6px;font-family:inherit}
+  .seg button[aria-pressed=true]{background:var(--blue);color:#fff;border-color:var(--blue);font-weight:600}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 14px}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 13px}
+  .stat .k{font-size:11px;color:var(--ink2);text-transform:uppercase;letter-spacing:.05em}
+  .stat .v{font-size:21px;font-weight:650;font-variant-numeric:tabular-nums;margin-top:3px}
+  .stat .n{font-size:11px;color:var(--muted);margin-top:2px}
+  svg{width:100%;height:auto;display:block;background:var(--panel);
+    border:1px solid var(--line);border-radius:10px}
+  .cap{font-size:12px;color:var(--ink2);margin:9px 2px 20px;max-width:80ch}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--ink2);margin:10px 2px}
+  .legend i{display:inline-block;width:16px;height:3px;border-radius:2px;
+    margin-right:6px;vertical-align:middle}
+  .verdict{border-left:3px solid var(--blue);padding:9px 13px;margin:12px 0 0;
+    font-size:13px;background:var(--panel);border-radius:0 8px 8px 0}
+  .verdict.bad{border-left-color:var(--orange)}
+  .presets{margin:0 0 18px}
+  .presets .pk{font-size:11px;color:var(--ink2);text-transform:uppercase;
+    letter-spacing:.05em;margin:0 0 7px;font-weight:600}
+  .pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  @media (max-width:860px){.pgrid{grid-template-columns:repeat(2,1fr)}}
+  .pgrid button{text-align:left;padding:9px 11px;cursor:pointer;font-family:inherit;
+    background:var(--panel);color:var(--ink);border:1px solid var(--line);
+    border-radius:8px;line-height:1.35}
+  .pgrid button:hover{border-color:var(--blue)}
+  .pgrid button[aria-pressed=true]{border-color:var(--blue);
+    box-shadow:inset 0 0 0 1px var(--blue)}
+  .pgrid button[aria-pressed=true].warn{border-color:var(--orange);
+    box-shadow:inset 0 0 0 1px var(--orange)}
+  .pgrid .pt{display:block;font-size:12.5px;font-weight:650}
+  .pgrid .pd{display:block;font-size:11px;color:var(--muted);margin-top:2px}
+  .pgrid .tag{display:inline-block;font-size:10px;letter-spacing:.04em;
+    text-transform:uppercase;font-weight:700;margin-bottom:3px;color:var(--aqua)}
+  .pgrid button.warn .tag{color:var(--orange)}
+  .verdict .vh{display:block;font-weight:650;margin-bottom:3px}
+  button.reset{width:100%;padding:8px;font-size:12.5px;cursor:pointer;font-family:inherit;
+    background:var(--surface);color:var(--ink2);border:1px solid var(--line);border-radius:6px}
+</style>
+
+<div class="wrap">
+<h1>Break the model yourself</h1>
+<p class="sub">Everything below is generated live in your browser from orbital mechanics. A
+7-day window is built, the model fits it, and it predicts day 8. Move the sliders to change
+what the satellite data looks like and watch what happens to the prediction.</p>
+
+<div class="presets">
+  <div class="pk">Four things the data can be</div>
+  <div class="pgrid" id="presets">
+    <button data-p="0" aria-pressed="false">
+      <span class="tag">Readable</span>
+      <span class="pt">A MEO satellite</span>
+      <span class="pd">Two rhythms in x and y. Neither is the orbit.</span></button>
+    <button data-p="1" aria-pressed="false">
+      <span class="tag">Readable</span>
+      <span class="pt">Almost no data</span>
+      <span class="pd">90% of the week missing. Still solved.</span></button>
+    <button data-p="2" aria-pressed="false" class="warn">
+      <span class="tag">Impossible</span>
+      <span class="pt">Not a satellite</span>
+      <span class="pd">No orbit can produce this. Model refuses.</span></button>
+    <button data-p="3" aria-pressed="false" class="warn">
+      <span class="tag">Empty</span>
+      <span class="pt">Nothing to find</span>
+      <span class="pd">No rhythm exists. Averaging is correct.</span></button>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="panel">
+    <div class="ctl">
+      <label>Orbit class</label>
+      <div class="seg" id="orbit">
+        <button data-v="MEO" aria-pressed="true">MEO</button>
+        <button data-v="GEO" aria-pressed="false">GEO</button>
+      </div>
+      <div class="hint">GEO repeats every sidereal day (23h56m). MEO orbits in 12–14h and its
+        x/y axes beat against the Earth's rotation.</div>
+    </div>
+
+    <div class="ctl">
+      <label>Measurement noise <b id="lnoise">0.05 m</b></label>
+      <input type="range" id="noise" min="0" max="100" value="5">
+      <div class="hint">Random error on every reading.</div>
+    </div>
+
+    <div class="ctl">
+      <label>Data coverage <b id="lcov">30%</b></label>
+      <input type="range" id="cov" min="8" max="100" value="30">
+      <div class="hint">How much of the week is actually sampled. The delivered files
+        are 13–32%.</div>
+    </div>
+
+    <div class="ctl">
+      <label>Sign artefact <b id="lart">0%</b></label>
+      <input type="range" id="art" min="0" max="50" value="0">
+      <div class="hint">Corrupts rows the way the delivered GEO file is corrupted: large
+        excursions with alternating signs. <b>Try 10%.</b></div>
+    </div>
+
+    <div class="ctl">
+      <label>Signal strength <b id="lamp">0.45 m</b></label>
+      <input type="range" id="amp" min="0" max="150" value="45">
+      <div class="hint">How much real orbital variation there is to find.</div>
+    </div>
+
+    <div class="ctl">
+      <label>Random draw <b id="lseed">1</b></label>
+      <input type="range" id="seed" min="1" max="60" value="1">
+      <div class="hint">A different satellite each time, with a new period, phase and drift.</div>
+    </div>
+
+    <button class="reset" id="reset">Reset to the delivered-data settings</button>
+  </div>
+
+  <div>
+    <div class="stats">
+      <div class="stat"><div class="k">Model error</div>
+        <div class="v" id="s_model" style="color:var(--blue)">–</div>
+        <div class="n">day 8, metres</div></div>
+      <div class="stat"><div class="k">7-day average</div>
+        <div class="v" id="s_mean" style="color:var(--orange)">–</div>
+        <div class="n">the baseline to beat</div></div>
+      <div class="stat"><div class="k">Improvement</div>
+        <div class="v" id="s_gain">–</div>
+        <div class="n">vs doing nothing</div></div>
+    </div>
+
+    <svg id="chart" viewBox="0 0 900 340" preserveAspectRatio="xMidYMid meet"></svg>
+    <div class="legend">
+      <span><i style="background:var(--muted)"></i>the 7 days we are given</span>
+      <span><i style="background:var(--ink)"></i>day-8 truth (hidden from the model)</span>
+      <span><i style="background:var(--blue)"></i>model prediction</span>
+      <span><i style="background:var(--orange)"></i>7-day average</span>
+    </div>
+    <div id="verdict" class="verdict"></div>
+    <p class="cap">The model never sees the black curve. It fits candidate bases on days 1–6,
+      picks whichever wins on day 7, refits on all seven days, then extrapolates.
+      Same algorithm as <code>model.py</code>, reimplemented here in JavaScript.</p>
+  </div>
+</div>
+</div>
+
+<script>
+const T_SID = 86164.0905, DAY = 86400;
+const PERIODS = {GPS:43082, GAL:50567, BDS:46393};
+
+/* ---------- deterministic RNG so a seed reproduces exactly ---------- */
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);
+  t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
+function gauss(r){let u=0,v=0;while(!u)u=r();while(!v)v=r();
+  return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+
+/* ---------- physics: ECEF beat periods ---------- */
+function beats(T){const o=[];for(const s of[1,-1]){const f=1/T+s/T_SID;
+  if(Math.abs(f)>1e-12){const P=Math.abs(1/f); if(P>1e3&&P<1e7)o.push(P);}}return o;}
+
+/* ---------- generate one window ---------- */
+function makeData(cfg){
+  const r = mulberry(cfg.seed*7919);
+  const isGeo = cfg.orbit==="GEO";
+  const keys = Object.keys(PERIODS);
+  const T = isGeo ? T_SID : PERIODS[keys[Math.floor(r()*3)]];
+  const per = isGeo ? [T_SID, T_SID/2] : beats(T);
+  const amps = per.map(()=>cfg.amp*(0.6+0.8*r()));
+  const phs  = per.map(()=>r()*2*Math.PI);
+  const bias = gauss(r)*0.7, drift = 0.25*gauss(r);
+  const sig = t => { let y = bias + drift*(t/(7*DAY));
+    for(let i=0;i<per.length;i++) y += amps[i]*Math.sin(2*Math.PI*t/per[i]+phs[i]);
+    return y; };
+
+  // sampling: bursts separated by gaps, matching the delivered format
+  const cad = isGeo?900:600, grid=[];
+  for(let t=0;t<7*DAY;t+=cad) grid.push(t);
+  const nb = 20, blen = Math.max(2, Math.round(cfg.cov*grid.length/nb));
+  const keep = new Array(grid.length).fill(false);
+  for(let b=0;b<nb;b++){const st=Math.floor(r()*(grid.length-blen));
+    for(let i=st;i<st+blen;i++) keep[i]=true;}
+  let tt = grid.filter((_,i)=>keep[i]);
+  if(tt.length<30) tt = grid.filter((_,i)=>i%3===0);
+
+  let obs = tt.map(t=>sig(t)+gauss(r)*cfg.noise);
+
+  // inject the alternating-sign artefact
+  if(cfg.art>0){
+    const idx=[]; for(let i=0;i<obs.length;i++) if(r()<cfg.art) idx.push(i);
+    idx.forEach((i,k)=>{ obs[i] = Math.abs(obs[i]||0.4)*(8+6*r())*(k%2===0?1:-1); });
+  }
+  const tq=[]; for(let t=7*DAY;t<8*DAY;t+=900) tq.push(t);
+  return {tt, obs, tq, truth: tq.map(sig), T, per};
+}
+
+/* ---------- the model, same three layers as model.py ---------- */
+function design(t, per, K){
+  return t.map(x=>{const row=[1];
+    for(const P of per) for(let j=1;j<=K;j++){
+      row.push(Math.sin(2*Math.PI*j*x/P), Math.cos(2*Math.PI*j*x/P));}
+    return row;});
+}
+function ridge(A,y,lam=1e-3){
+  const n=A[0].length, AtA=[], Aty=new Array(n).fill(0);
+  for(let i=0;i<n;i++){AtA.push(new Array(n).fill(0));}
+  for(let k=0;k<A.length;k++){for(let i=0;i<n;i++){Aty[i]+=A[k][i]*y[k];
+    for(let j=0;j<n;j++) AtA[i][j]+=A[k][i]*A[k][j];}}
+  let tr=0; for(let i=0;i<n;i++) tr+=AtA[i][i];
+  const l=lam*tr/n; for(let i=0;i<n;i++) AtA[i][i]+=l;
+  // gaussian elimination
+  const M=AtA.map((row,i)=>row.concat([Aty[i]]));
+  for(let c=0;c<n;c++){
+    let p=c; for(let i=c+1;i<n;i++) if(Math.abs(M[i][c])>Math.abs(M[p][c])) p=i;
+    if(Math.abs(M[p][c])<1e-12) return null;
+    [M[c],M[p]]=[M[p],M[c]];
+    for(let i=0;i<n;i++){ if(i===c) continue; const f=M[i][c]/M[c][c];
+      for(let j=c;j<=n;j++) M[i][j]-=f*M[c][j]; }
+  }
+  return M.map((row,i)=>row[n]/row[i][i] || row[n]/M[i][i]);
+}
+function mean(a){return a.reduce((s,x)=>s+x,0)/a.length;}
+function rms(a,b){let s=0;for(let i=0;i<a.length;i++)s+=(a[i]-b[i])**2;return Math.sqrt(s/a.length);}
+
+function runModel(d){
+  const cut = d.tt[0] + (d.tt[d.tt.length-1]-d.tt[0])*6/7;
+  const ai=[], bi=[];
+  d.tt.forEach((t,i)=>(t<=cut?ai:bi).push(i));
+  if(ai.length<12||bi.length<4) return {pred:d.tq.map(()=>mean(d.obs)), basis:"flat (too little data)"};
+  const ta=ai.map(i=>d.tt[i]), ya=ai.map(i=>d.obs[i]);
+  const tb=bi.map(i=>d.tt[i]), yb=bi.map(i=>d.obs[i]);
+
+  let best={err:Infinity, kind:"flat", K:0};
+  // level estimators
+  for(const [nm,span] of [["mean",Infinity],["mean 3d",3*DAY],["mean 1d",DAY]]){
+    const sel=ai.filter(i=>d.tt[i]>=cut-span); if(sel.length<3) continue;
+    const m=mean(sel.map(i=>d.obs[i]));
+    const e=rms(yb, yb.map(()=>m));
+    if(e<best.err) best={err:e, kind:"flat", K:0, val:m, nm};
+  }
+  // harmonic bases at the physically admissible periods
+  for(let K=1;K<=3;K++){
+    const c=ridge(design(ta,d.per,K), ya); if(!c) continue;
+    const p=design(tb,d.per,K).map(row=>row.reduce((s,v,j)=>s+v*c[j],0));
+    const e=rms(yb,p);
+    if(e<best.err) best={err:e, kind:"harmonic", K};
+  }
+  let pred;
+  if(best.kind==="flat"){ pred=d.tq.map(()=>best.val); }
+  else{
+    const c=ridge(design(d.tt,d.per,best.K), d.obs);
+    pred = c ? design(d.tq,d.per,best.K).map(row=>row.reduce((s,v,j)=>s+v*c[j],0))
+             : d.tq.map(()=>mean(d.obs));
+    const lo=Math.min(...d.obs), hi=Math.max(...d.obs), pad=2*(hi-lo);
+    pred=pred.map(v=>Math.max(lo-pad,Math.min(hi+pad,v)));
+  }
+  return {pred, basis: best.kind==="flat"? `flat level (${best.nm})` : `harmonic, order ${best.K}`,
+          sigma: best.err};
+}
+
+/* ---------- drawing ---------- */
+const NS="http://www.w3.org/2000/svg";
+function el(n,a){const e=document.createElementNS(NS,n);
+  for(const k in a) e.setAttribute(k,a[k]); return e;}
+
+function draw(d,res){
+  const svg=document.getElementById("chart");
+  while(svg.firstChild) svg.removeChild(svg.firstChild);
+  const W=900,H=340,L=52,R=14,Tp=14,B=34;
+  const all=[...d.obs,...d.truth,...res.pred].filter(Number.isFinite);
+  let lo=Math.min(...all), hi=Math.max(...all);
+  const vis=[...d.truth,...res.pred,...d.obs.filter(v=>Math.abs(v)<20)];
+  lo=Math.min(...vis); hi=Math.max(...vis);
+  const pad=(hi-lo)*0.12||1; lo-=pad; hi+=pad;
+  const t0=0, t1=8*DAY;
+  const X=t=>L+(t-t0)/(t1-t0)*(W-L-R);
+  const Y=v=>Tp+(hi-v)/(hi-lo)*(H-Tp-B);
+
+  // grid + axes
+  for(let day=0;day<=8;day++){
+    svg.appendChild(el("line",{x1:X(day*DAY),y1:Tp,x2:X(day*DAY),y2:H-B,
+      stroke:"var(--line)","stroke-width":1}));
+    const tx=el("text",{x:X(day*DAY),y:H-14,"text-anchor":"middle",
+      "font-size":11,fill:"var(--muted)"}); tx.textContent=day; svg.appendChild(tx);
+  }
+  const xl=el("text",{x:(L+W-R)/2,y:H-2,"text-anchor":"middle","font-size":11,
+    fill:"var(--ink2)"}); xl.textContent="days"; svg.appendChild(xl);
+  for(let k=0;k<=4;k++){
+    const v=lo+(hi-lo)*k/4;
+    svg.appendChild(el("line",{x1:L,y1:Y(v),x2:W-R,y2:Y(v),
+      stroke:"var(--line)","stroke-width":1}));
+    const tx=el("text",{x:L-7,y:Y(v)+4,"text-anchor":"end","font-size":10.5,
+      fill:"var(--muted)"}); tx.textContent=v.toFixed(2); svg.appendChild(tx);
+  }
+  // day-8 shading
+  svg.appendChild(el("rect",{x:X(7*DAY),y:Tp,width:X(8*DAY)-X(7*DAY),height:H-Tp-B,
+    fill:"var(--ink)",opacity:0.04}));
+
+  // observed samples
+  d.tt.forEach((t,i)=>{ const v=d.obs[i];
+    if(v<lo||v>hi) return;
+    svg.appendChild(el("circle",{cx:X(t),cy:Y(v),r:1.9,fill:"var(--muted)"}));});
+  // off-scale markers
+  d.tt.forEach((t,i)=>{const v=d.obs[i];
+    if(v>hi) svg.appendChild(el("path",{d:`M${X(t)},${Tp+5} l-3.5,6 l7,0 z`,fill:"var(--orange)"}));
+    if(v<lo) svg.appendChild(el("path",{d:`M${X(t)},${H-B-5} l-3.5,-6 l7,0 z`,fill:"var(--orange)"}));});
+
+  const path=(ts,vs,col,w)=>{
+    let dd=""; ts.forEach((t,i)=>{dd+=(i?"L":"M")+X(t)+","+Y(vs[i]);});
+    svg.appendChild(el("path",{d:dd,fill:"none",stroke:col,"stroke-width":w,
+      "stroke-linejoin":"round","stroke-linecap":"round"}));};
+
+  const m=mean(d.obs);
+  if(m>=lo&&m<=hi)
+    svg.appendChild(el("line",{x1:X(7*DAY),y1:Y(m),x2:X(8*DAY),y2:Y(m),
+      stroke:"var(--orange)","stroke-width":2.5,"stroke-dasharray":"7 4"}));
+  path(d.tq,d.truth,"var(--ink)",2.6);
+  path(d.tq,res.pred,"var(--blue)",2.4);
+}
+
+/* ---------- wire up ---------- */
+const cfg={orbit:"MEO",noise:0.05,cov:0.30,art:0,amp:0.45,seed:1};
+
+/* ---------- presets: each one is a claim about the DATA ---------- */
+const PRESETS = [
+ {cfg:{orbit:"MEO",noise:0.05,cov:0.55,art:0,amp:0.60,seed:5},
+  ui:{noise:5,cov:55,art:0,amp:60,seed:5},
+  head:"This data is a MEO satellite, and that is readable off the rhythm.",
+  body:`x and y carry <b>two</b> periods, and neither of them is the orbital period.
+    That is not a quirk of this file, it is what the Earth's rotation does to any
+    orbit viewed in Earth-fixed coordinates: one rotation multiplied by another
+    splits into a sum and a difference. Only z keeps the orbital period.
+    Because the constellation fixes the period, the model is <b>told</b> the two
+    beats rather than searching for them, so it fits with three numbers per axis.`},
+
+ {cfg:{orbit:"MEO",noise:0.05,cov:0.10,art:0,amp:0.55,seed:12},
+  ui:{noise:5,cov:10,art:0,amp:55,seed:12},
+  head:"Only 10% of the week is sampled, and it still works.",
+  body:`Nine tenths of the window is missing, which is worse than the sparsest file
+    we were given. A learner with no prior would have almost nothing to generalise
+    from here. This survives because the <b>shape</b> was decided by orbital
+    mechanics before any data arrived, so the observations only have to pin down
+    an amplitude and a phase. <b>This is the difference between encoding physics
+    and fitting a curve.</b>`},
+
+ {cfg:{orbit:"GEO",noise:0.05,cov:0.45,art:0.35,amp:0.50,seed:13},
+  ui:{noise:5,cov:45,art:35,amp:50,seed:13},
+  warn:true,
+  head:"No satellite can produce this data.",
+  body:`Consecutive readings are near-exact opposites, and all four channels flip
+    together. Position error comes from orbit modelling and clock error comes from
+    an atomic oscillator, two unrelated mechanisms, so they <b>cannot</b> reverse in
+    step. Nothing in orbital mechanics moves a satellite a metre and back between
+    samples. This is the signature of a corrupted file, and it is the signature the
+    delivered GEO file has. The model does the honest thing: it finds no rhythm it
+    believes, falls back to a flat level, and scores level with doing nothing.`},
+
+ {cfg:{orbit:"MEO",noise:0.50,cov:0.45,art:0,amp:0.02,seed:8},
+  ui:{noise:50,cov:45,art:0,amp:2,seed:8},
+  warn:true,
+  head:"There is no rhythm here, and the model says so.",
+  body:`The orbital signal has been turned down to almost nothing and the noise turned
+    up, so what is left is drift and measurement error. There is no periodic structure
+    to recover, and the correct answer is the average. The model reaches that answer
+    on its own: it rejects every harmonic basis, selects a flat level, and lands within
+    a few percent of the 7-day average. <b>A model that reported a confident daily
+    rhythm here would be inventing one.</b>`},
+];
+let activePreset = null;
+
+function update(){
+  document.getElementById("lnoise").textContent=cfg.noise.toFixed(2)+" m";
+  document.getElementById("lcov").textContent=Math.round(cfg.cov*100)+"%";
+  document.getElementById("lart").textContent=Math.round(cfg.art*100)+"%";
+  document.getElementById("lamp").textContent=cfg.amp.toFixed(2)+" m";
+  document.getElementById("lseed").textContent=cfg.seed;
+
+  const d=makeData(cfg), res=runModel(d);
+  const eM=rms(res.pred,d.truth);
+  const mv=mean(d.obs);
+  const eB=rms(d.truth.map(()=>mv),d.truth);
+  const eZ=rms(d.truth.map(()=>0),d.truth);
+  draw(d,res);
+
+  document.getElementById("s_model").textContent=eM.toFixed(3);
+  document.getElementById("s_mean").textContent=eB.toFixed(3);
+  const gain=100*(1-eM/eZ);
+  const g=document.getElementById("s_gain");
+  g.textContent=(gain>0?"":"")+gain.toFixed(0)+"%";
+  g.style.color = gain>25?"var(--aqua)":(gain>0?"var(--ink)":"var(--orange)");
+
+  const v=document.getElementById("verdict");
+  let msg, bad=false;
+  if(activePreset!==null){
+    const P=PRESETS[activePreset];
+    msg=`<span class="vh">${P.head}</span>${P.body}
+      <br><br>Model <b>${eM.toFixed(3)} m</b> against a 7-day average of
+      <b>${eB.toFixed(3)} m</b>. It chose <b>${res.basis}</b> from
+      ${d.obs.length} samples.`;
+    bad=!!P.warn;
+  } else if(cfg.art>=0.08){
+    msg=`<b>This is what the delivered GEO file looks like.</b> With ${Math.round(cfg.art*100)}% of rows
+      corrupted the model can no longer see the orbital rhythm. It falls back to a flat line and
+      does ${gain<0?"<b>worse than doing nothing</b>":"barely better than nothing"}.
+      The underlying physics is unchanged; only the sign artefact was added.`; bad=true;
+  } else if(cfg.noise>0.5){
+    msg=`Noise is ${cfg.noise.toFixed(2)} m against a signal of ${cfg.amp.toFixed(2)} m, and the model
+      still recovers ${gain.toFixed(0)}%. It degrades gracefully rather than breaking.`;
+  } else if(cfg.cov<0.15){
+    msg=`Only ${Math.round(cfg.cov*100)}% of the week is sampled, close to the delivered
+      <code>MEO_Train</code> at 13%, and the fit still holds, because the basis is fixed
+      by physics rather than estimated from scratch.`;
+  } else {
+    msg=`The model chose <b>${res.basis}</b> by testing candidates on day 7, then refit on all
+      seven days. It is ${gain.toFixed(0)}% better than doing nothing and
+      ${eM<eB?"beats":"loses to"} the 7-day average.`;
+  }
+  v.innerHTML=msg; v.className="verdict"+(bad?" bad":"");
+}
+function clearPreset(){
+  activePreset=null;
+  document.querySelectorAll("#presets button").forEach(b=>b.setAttribute("aria-pressed","false"));
+}
+const bind=(id,key,f)=>document.getElementById(id).addEventListener("input",e=>{
+  cfg[key]=f(+e.target.value); clearPreset(); update();});
+bind("noise","noise",v=>v/100); bind("cov","cov",v=>v/100);
+bind("art","art",v=>v/100); bind("amp","amp",v=>v/100);
+bind("seed","seed",v=>v);
+document.querySelectorAll("#orbit button").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll("#orbit button").forEach(x=>x.setAttribute("aria-pressed","false"));
+  b.setAttribute("aria-pressed","true"); cfg.orbit=b.dataset.v; clearPreset(); update();}));
+document.getElementById("reset").addEventListener("click",()=>{
+  Object.assign(cfg,{orbit:"MEO",noise:0.05,cov:0.30,art:0,amp:0.45,seed:1});
+  document.getElementById("noise").value=5; document.getElementById("cov").value=30;
+  document.getElementById("art").value=0; document.getElementById("amp").value=45;
+  document.getElementById("seed").value=1;
+  document.querySelectorAll("#orbit button").forEach(x=>
+    x.setAttribute("aria-pressed", x.dataset.v==="MEO"?"true":"false"));
+  clearPreset(); update();});
+
+document.querySelectorAll("#presets button").forEach(b=>b.addEventListener("click",()=>{
+  const i=+b.dataset.p, P=PRESETS[i];
+  Object.assign(cfg,P.cfg);
+  for(const [id,val] of Object.entries(P.ui)) document.getElementById(id).value=val;
+  document.querySelectorAll("#orbit button").forEach(x=>
+    x.setAttribute("aria-pressed", x.dataset.v===P.cfg.orbit?"true":"false"));
+  document.querySelectorAll("#presets button").forEach(x=>x.setAttribute("aria-pressed","false"));
+  b.setAttribute("aria-pressed","true");
+  activePreset=i; update();
+}));
+update();
+</script>

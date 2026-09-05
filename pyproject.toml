@@ -1,0 +1,26 @@
+[project]
+name = "smart-horizon"
+version = "1.0.0"
+description = "Physics-constrained day-8 prediction of GNSS satellite position and clock error."
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=2.0",
+    "pandas>=2.2",
+    "scipy>=1.13",
+    "matplotlib>=3.9",
+    "scikit-learn>=1.5",
+    "openpyxl>=3.1",
+]
+
+[project.optional-dependencies]
+notebook = [
+    "jupyterlab>=4.2",
+    "ipykernel>=6.29",
+    "nbformat>=5.10",
+]
+
+[project.scripts]
+smart-horizon = "predict:main"
+
+[tool.uv]
+package = false
