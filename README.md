@@ -1,6 +1,6 @@
 # Hybrid Physics-Informed Forecasting
 
-### [Interactive demo: break the model yourself](https://neil-lunavat.github.io/smart-horizon/)
+### [Open the interface](https://neil-lunavat.github.io/smart-horizon/)
 
 ### [Presentation deck and demo video (Google Drive)](https://drive.google.com/drive/folders/1ua1AiKySnGl7Wt33RzyJdwDGcEIiU0Zl?usp=sharing)
 
@@ -90,8 +90,11 @@ uv run python figures/make_figures.py  # all 22 figures
 
 ## Try it yourself
 
-**[Open the interactive demo](https://neil-lunavat.github.io/smart-horizon/)** in your browser. No install, no server.
-The same page is [`index.html`](index.html) in this repo.
+**[Open the interface](https://neil-lunavat.github.io/smart-horizon/)**: pick one of the delivered files or upload your
+own, and watch day 8 play out on the globe, the error charts and a position fix. It runs in the browser, with no server.
+
+Then break the model yourself in the **[sandbox](https://neil-lunavat.github.io/smart-horizon/interactive.html)**
+([`interactive.html`](interactive.html)).
 
 Four presets, each a claim about the _data_ rather than the model:
 
@@ -112,6 +115,11 @@ Four presets, each a claim about the _data_ rather than the model:
 | `experiments.py`          | all eight experiments                                 |
 | `figures/make_figures.py` | all 22 figures                                        |
 | `data/`                   | the delivered files, unmodified                       |
+| `index.html`              | the interface, as one page with no server             |
+| `interface/`, `backend/`  | the interface as built at the hackathon, with a server |
+
+The whole road here, every stage and dead end, is on the
+[`journey`](https://github.com/Neil-Lunavat/smart-horizon/tree/journey) branch.
 
 ## Notes
 
