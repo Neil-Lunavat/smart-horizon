@@ -1,0 +1,95 @@
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\taskB.py:52: Pandas4Warning: Starting with pandas version 4.0 all arguments of sum will be keyword-only.
+  r = np.sqrt(pd.read_parquet("full2.parquet", columns=["px", "py", "pz"]).pow(2).sum(1))
+corpus grid (103, 23424, 4)   valid 84.8%
+
+==============================================================================================
+IRREGULAR sampling (~30% kept + multi-hour gaps) -- matches their files   (1500 windows)
+==============================================================================================
+
+--- GEO+GSO   132 windows, 4,442 query points
+method          x_err       y_err       z_err   clock_err   mean RMS
+zero            1.705       1.845       0.880       6.344      2.694
+mean            0.492       0.490       0.839       0.555      0.594
+median          0.530       0.499       0.854       0.556      0.610
+last            0.512       0.652       1.233       0.581      0.745
+linear          0.605       0.529       0.880       0.560      0.644
+harm-P          0.463       0.293       0.197       0.525      0.370
+harm-LS         0.594       0.377       0.223       0.561      0.439
+harm-MULTI      0.730       0.397       0.219       0.613      0.490
+
+  residual distribution, harm-MULTI (pooled over windows):
+  target         mean      std    skew     kurt  ShapiroW
+  x_err        -0.064    0.727   -0.81     18.6    0.6869
+  y_err        -0.026    0.396   -0.23      9.0    0.8764
+  z_err        -0.001    0.219   -6.84    193.4    0.7597
+  clock_err    -0.007    0.613    0.75     17.4    0.7474
+
+  per-window Shapiro W (median over windows) -- how a single satellite file would score:
+  x_err=0.9379  y_err=0.9522  z_err=0.9395  clock_err=0.9452
+
+--- MEO   1368 windows, 46,392 query points
+method          x_err       y_err       z_err   clock_err   mean RMS
+zero            0.823       0.829       0.802       6.585      2.260
+mean            0.827       0.832       0.798       0.508      0.741
+median          0.840       0.847       0.808       0.520      0.754
+last            1.199       1.179       1.134       0.455      0.992
+linear          0.860       0.870       0.813       0.487      0.758
+harm-P          0.840       0.845       0.360       0.508      0.638
+harm-LS         0.444       0.455       0.397       0.565      0.465
+harm-MULTI      0.470       0.475       0.413       0.695      0.514
+
+  residual distribution, harm-MULTI (pooled over windows):
+  target         mean      std    skew     kurt  ShapiroW
+  x_err        -0.002    0.470    0.07      4.5    0.9606
+  y_err        -0.004    0.475    0.02      4.8    0.9358
+  z_err        -0.005    0.413    0.02      7.2    0.9041
+  clock_err    -0.009    0.695   -0.29      9.7    0.8684
+
+  per-window Shapiro W (median over windows) -- how a single satellite file would score:
+  x_err=0.9403  y_err=0.9433  z_err=0.9477  clock_err=0.9335
+
+==============================================================================================
+UNIFORM 15-min sampling -- upper bound if they gave clean data   (1500 windows)
+==============================================================================================
+
+--- GEO+GSO   121 windows, 3,981 query points
+method          x_err       y_err       z_err   clock_err   mean RMS
+zero            1.464       1.639       0.833       5.704      2.410
+mean            0.603       0.512       0.785       0.392      0.573
+median          0.569       0.516       0.789       0.405      0.570
+last            0.460       0.607       1.111       0.409      0.647
+linear          0.676       0.508       0.790       0.410      0.596
+harm-P          0.548       0.262       0.160       0.338      0.327
+harm-LS         0.635       0.349       0.170       0.390      0.386
+harm-MULTI      0.664       0.274       0.182       0.487      0.402
+
+  residual distribution, harm-MULTI (pooled over windows):
+  target         mean      std    skew     kurt  ShapiroW
+  x_err        -0.044    0.663    0.14     27.0    0.6320
+  y_err        -0.009    0.274   -0.51      2.6    0.9608
+  z_err         0.003    0.182   -0.52     12.3    0.9195
+  clock_err     0.033    0.486    1.01     11.8    0.8415
+
+  per-window Shapiro W (median over windows) -- how a single satellite file would score:
+  x_err=0.9464  y_err=0.9475  z_err=0.9461  clock_err=0.9433
+
+--- MEO   1379 windows, 46,846 query points
+method          x_err       y_err       z_err   clock_err   mean RMS
+zero            0.813       0.824       0.796       7.199      2.408
+mean            0.813       0.824       0.791       0.493      0.730
+median          0.817       0.828       0.794       0.507      0.737
+last            1.170       1.197       1.128       0.384      0.970
+linear          0.830       0.841       0.795       0.475      0.735
+harm-P          0.812       0.824       0.356       0.490      0.621
+harm-LS         0.408       0.416       0.369       0.535      0.432
+harm-MULTI      0.416       0.423       0.379       0.649      0.467
+
+  residual distribution, harm-MULTI (pooled over windows):
+  target         mean      std    skew     kurt  ShapiroW
+  x_err        -0.003    0.416   -0.05      4.9    0.9530
+  y_err         0.003    0.423   -0.11      5.7    0.9356
+  z_err        -0.004    0.379   -0.07      5.5    0.9127
+  clock_err     0.014    0.649   -0.61     11.5    0.9055
+
+  per-window Shapiro W (median over windows) -- how a single satellite file would score:
+  x_err=0.9466  y_err=0.9447  z_err=0.9459  clock_err=0.9345

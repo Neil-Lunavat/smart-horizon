@@ -1,0 +1,2 @@
+grid (103, 23424, 4)  broadcast (103, 23424, 21)  span 2026-01-01 00:00:00 .. 2026-09-01 23:45:00
+LAG = 288 steps (3.0 d).  truth valid 84.8%  broadcast valid 85.7%

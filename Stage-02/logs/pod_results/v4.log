@@ -1,0 +1,55 @@
+samples 980,967  train 766,915 val 61,113 test 83,111
+  seed 0 val NLL -0.1935  nu=[10.8 11.8 14.8  7.6]  [57s]
+  seed 1 val NLL -0.2002  nu=[10.9 11.6 15.4  7.7]  [55s]
+  seed 2 val NLL -0.1882  nu=[11.1 12.9 16.7  8.2]  [56s]
+  seed 3 val NLL -0.1846  nu=[11.2 12.9 16.8  8.2]  [59s]
+  seed 4 val NLL -0.1956  nu=[10.8 11.2 15.   7.2]  [54s]
+learned degrees of freedom: {np.str_('dR'): np.float32(11.0), np.str_('dA'): np.float32(12.1), np.str_('dC'): np.float32(15.7), np.str_('dClk_m'): np.float32(7.8)}
+
+                            dR       dA       dC   dClk_m     SISRE
+raw broadcast            1.300    0.748    0.452    7.071     7.393
+7d window mean           0.144    0.642    0.431    0.400     0.417
+v4 ensemble              0.082    0.517    0.351    0.345     0.355
+v4 + blend               0.082    0.524    0.350    0.335     0.345
+
+per-system SISRE:
+sys        raw  baseline       v4     cut
+G        1.464     0.352    0.314   78.5%
+E        0.851     0.448    0.288   66.1%
+C       12.762     0.458    0.424   96.7%
+J        2.547     0.353    0.266   89.6%
+ALL      7.393     0.417    0.345   95.3%
+
+--- RAW residuals, metres (scale mixture -- heavy by construction) ---
+target       mean      std    skew     kurt  ShapiroW        p
+dR        -0.0034   0.0824   -0.15     31.8    0.8770   0.0000
+dA         0.0353   0.5157    0.37     13.3    0.8282   0.0000
+dC        -0.0135   0.3505   -0.34     77.6    0.7966   0.0000
+dClk_m    -0.0144   0.3444   -3.09    130.8    0.9137   0.0000
+
+--- STANDARDISED residuals (y-mu)/sigma ---
+target       mean      std    skew     kurt  ShapiroW        p
+dR        -0.0431   1.0471   -0.08      1.9    0.9909   0.0000
+dA         0.0749   1.0855    0.16      1.3    0.9942   0.0000
+dC        -0.0577   1.0695   -0.02      0.7    0.9971   0.0000
+dClk_m    -0.0518   1.0638   -0.17     19.2    0.9027   0.0000
+
+--- PIT NORMAL SCORES  Phi^-1(F(y))  <- the calibration test ---
+target       mean      std    skew     kurt  ShapiroW        p
+dR        -0.0387   0.9476   -0.02      0.2    0.9987   0.0023
+dA         0.0670   0.9879    0.07      0.2    0.9989   0.0095
+dC        -0.0539   0.9976   -0.00      0.1    0.9994   0.2264
+dClk_m    -0.0428   0.8545   -0.15      2.0    0.9794   0.0000
+
+--- PIT uniformity (Kolmogorov-Smirnov vs Uniform(0,1)) ---
+  dR       KS D=0.0274
+  dA       KS D=0.0297
+  dC       KS D=0.0229
+  dClk_m   KS D=0.0725
+
+--- interval coverage from the Student-t predictive law ---
+target          50%       68.3%       95.4%       99.7%
+dR            52.9%       71.4%       96.5%       99.7%
+dA            51.4%       69.2%       95.5%       99.6%
+dC            50.1%       68.5%       95.5%       99.7%
+dClk_m        60.9%       78.9%       97.5%       99.3%

@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#04081a" />
+<title>Smart Horizon</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+<style>
+  :root{
+    --bg-color:#050a1c; --card-bg:#0b1326; --card-bg-elevated:#111c36;
+    --border-color:rgba(59,130,246,.38); --border-color-glow:#3b82f6;
+    --border-thickness:1px; --border-radius:8px; --border-radius-sm:5px;
+    --text-color:#c7d6ea; --text-accent:#e6f0ff; --text-muted:#6f84a3;
+    --card-shadow:0 6px 20px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box}
+  [hidden]{display:none!important}
+  #globe{position:absolute;inset:0}
+  html,body{height:100%;margin:0}
+  body{background:var(--bg-color);color:var(--text-color);
+    font:13px/1.4 "Courier New","Lucida Console",Monaco,monospace;overflow:hidden}
+  .app{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:10px;height:100vh;padding:10px}
+  .col{display:flex;flex-direction:column;min-height:0;min-width:0}
+  .card{border:var(--border-thickness) solid var(--border-color);border-radius:var(--border-radius);
+    background:var(--card-bg);box-shadow:var(--card-shadow);overflow:hidden;
+    display:flex;flex-direction:column;min-height:0}
+  .main-card{flex:1;position:relative}
+  .timeline-card{height:66px;flex-shrink:0;margin-top:10px}
+  .side-card{flex:1;margin-bottom:10px}
+  .side-card:last-child{margin-bottom:0}
+  .controls{padding:10px 12px;margin-bottom:10px;flex-shrink:0}
+  .controls h1{margin:0 0 2px;font-size:15px;letter-spacing:1.5px;color:#38bdf8;text-transform:uppercase}
+  .controls p{margin:0 0 9px;font-size:10.5px;color:var(--text-muted)}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+  select.field,button.field,label.field{height:34px;border:var(--border-thickness) solid var(--border-color);
+    border-radius:var(--border-radius-sm);background:var(--card-bg-elevated);color:var(--text-accent);
+    font:bold 11.5px "Courier New",monospace;letter-spacing:.5px;text-transform:uppercase;
+    padding:0 8px;cursor:pointer;display:flex;align-items:center;justify-content:center;width:100%}
+  button.field:hover,label.field:hover{background:rgba(59,130,246,.25);border-color:var(--border-color-glow)}
+  button.run{background:rgba(56,189,248,.18);color:#38bdf8}
+  .charts{display:none;flex:1;min-height:0;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:1px;
+    background:var(--border-color)}
+  .track2 .charts{display:grid}
+  .track2 .sphere-canvas-container{display:none}
+  .phasor-canvas-wrapper canvas{position:absolute;inset:0}
+  .scale-note{position:absolute;bottom:10px;right:12px;z-index:5;font-size:9.5px;color:var(--text-muted);
+    pointer-events:none;text-align:right}
+  .sat-dot{pointer-events:none}
+  @media (max-width:900px){
+    body{overflow:auto}
+    .app{grid-template-columns:1fr;height:auto}
+    .main-card{height:62vh;flex:none}
+    .side-card{height:300px;flex:none}
+    .timeline-hint,.canvas-hud__coords{display:none}
+  }
+</style>
+<link rel="stylesheet" href="interface/style.css" />
+</head>
+<body>
+<div class="app" id="app">
+  <div class="col">
+    <div class="card main-card">
+      <div class="sphere-canvas-container" id="globeBox">
+        <div class="canvas-top-bar">
+          <div class="canvas-hud">
+            <span class="canvas-hud__title">Predicted error</span>
+            <span class="canvas-hud__legend">
+              <span class="hud-tag--green">&#9679; corrected</span>
+              <span class="hud-tag--red">&#9679; broadcast</span>
+            </span>
+            <span class="canvas-hud__coords" id="hudCoords"></span>
+          </div>
+          <div class="canvas-timer-hud">
+            <span class="canvas-timer-hud__label">T+</span>
+            <span class="canvas-timer-hud__val" id="hudTimer">00:00:00:00</span>
+          </div>
+        </div>
+        <div id="globe"></div>
+        <div class="scale-note" id="scaleNote"></div>
+      </div>
+      <div class="charts" id="charts">
+        <div class="panel2-chart-container"><div class="panel2-chart-hud"><span class="panel2-chart-title">X error (m)</span><span class="panel2-chart-values" id="cv0"></span></div><div class="panel2-chart-canvas-wrap"><canvas id="ch0"></canvas></div></div>
+        <div class="panel2-chart-container"><div class="panel2-chart-hud"><span class="panel2-chart-title">Y error (m)</span><span class="panel2-chart-values" id="cv1"></span></div><div class="panel2-chart-canvas-wrap"><canvas id="ch1"></canvas></div></div>
+        <div class="panel2-chart-container"><div class="panel2-chart-hud"><span class="panel2-chart-title">Z error (m)</span><span class="panel2-chart-values" id="cv2"></span></div><div class="panel2-chart-canvas-wrap"><canvas id="ch2"></canvas></div></div>
+        <div class="panel2-chart-container"><div class="panel2-chart-hud"><span class="panel2-chart-title">Clock error (m)</span><span class="panel2-chart-values" id="cv3"></span></div><div class="panel2-chart-canvas-wrap"><canvas id="ch3"></canvas></div></div>
+      </div>
+    </div>
+    <div class="card timeline-card">
+      <div class="timeline-container">
+        <button class="timeline-play-btn" id="play" aria-label="Play">&#9654;</button>
+        <div class="timeline-track-wrapper">
+          <div class="timeline-info-row">
+            <div class="timeline-left-info">
+              <span class="timeline-timestamp" id="tlTime">-</span>
+              <span class="timeline-badge">DAY 8</span>
+            </div>
+            <div class="timeline-errors" id="tlErr"></div>
+            <span class="timeline-hint">drag to scrub</span>
+          </div>
+          <input class="timeline-slider" id="slider" type="range" min="0" max="95" value="0" />
+        </div>
+        <div class="timeline-speed-wrapper">
+          <select class="timeline-speed-select" id="speed" aria-label="Speed">
+            <option value="1">1x</option><option value="2">2x</option><option value="4" selected>4x</option>
+            <option value="8">8x</option><option value="16">16x</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="track-selector-row">
+      <button class="track-box track-box--active" id="t1">Orbit view</button>
+      <button class="track-box" id="t2">Error charts</button>
+    </div>
+
+    <div class="card controls">
+      <h1>Smart Horizon</h1>
+      <p>Seven days of a satellite's position and clock error in, day 8 out.</p>
+      <div class="row">
+        <select class="field" id="dataset" aria-label="File">
+          <option value="meo2">MEO satellite 2</option>
+          <option value="meo">MEO satellite 1</option>
+          <option value="geo">GEO satellite</option>
+        </select>
+        <label class="field">Upload CSV<input type="file" id="file" accept=".csv" hidden /></label>
+      </div>
+      <div class="row" id="orbitRow" hidden>
+        <select class="field" id="orbit" aria-label="Orbit"><option>MEO</option><option>GEO</option></select>
+        <button class="field run" id="run">Predict day 8</button>
+      </div>
+      <p class="inference-status" id="status"></p>
+      <button class="field download-btn" id="download">Download result CSV</button>
+    </div>
+
+    <div class="card side-card">
+      <div class="panel-header"><span class="panel-header__title">Clock error over day 8</span></div>
+      <div class="phasor-container">
+        <div class="phasor-hud"><span>one turn = 24 h</span><span class="phasor-hud__val--active" id="phVal"></span></div>
+        <div class="phasor-canvas-wrapper" id="phWrap"><canvas class="phasor-canvas" id="phasor"></canvas></div>
+        <div class="phasor-legend">
+          <span class="phasor-legend__item"><span class="phasor-legend__dot phasor-legend__dot--green"></span>predicted, all day</span>
+          <span class="phasor-legend__item"><span class="phasor-legend__dot phasor-legend__dot--red"></span>now</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card side-card">
+      <div class="panel-header"><span class="panel-header__title">What the error does to a position fix</span></div>
+      <div class="gnss-panel-container">
+        <div class="gnss-map-wrapper">
+          <div class="gnss-cyan-map" id="map"></div>
+          <div class="gnss-reticle-overlay"><div class="gnss-reticle-ring"></div><div class="gnss-reticle-line-h"></div><div class="gnss-reticle-line-v"></div></div>
+        </div>
+        <div class="gnss-text-space">
+          <div class="gnss-telemetry-row"><span class="gnss-telemetry-lbl">Receiver</span><span class="gnss-telemetry-val">12.9337 N, 77.6921 E</span></div>
+          <div class="gnss-telemetry-row"><span class="gnss-telemetry-lbl">Red: error left in</span><span class="gnss-telemetry-val" id="mapOff"></span></div>
+          <div class="gnss-telemetry-row"><span class="gnss-telemetry-lbl">Green: prediction taken out</span><span class="gnss-telemetry-val">0.00 m</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="https://unpkg.com/chart.js@4.5.1/dist/chart.umd.js"></script>
+<script src="https://unpkg.com/globe.gl@2.46.2/dist/globe.gl.min.js"></script>
+<script src="interface/data.js"></script>
+<script>
+/* Smart Horizon interface, with no server.
+   The three delivered files carry the output of predict.py (interface/data.js).
+   An uploaded CSV is fitted here in the browser by a short JavaScript version of model.py. */
+const $ = id => document.getElementById(id);
+const COLS = ["x", "y", "z", "clock"];
+const T_SID = 86164.0905, DAY = 86400, RECEIVER = [12.9337, 77.6921];
+let cur = null, idx = 0, playing = false, timer = null, globe = null, map = null, charts = [], mapMarks = null;
+
+/* ---------- the model for uploaded files ---------- */
+const mean = a => a.reduce((s, x) => s + x, 0) / a.length;
+const rms = (a, b) => Math.sqrt(a.reduce((s, x, i) => s + (x - b[i]) ** 2, 0) / a.length);
+function beats(T) { const o = []; for (const s of [1, -1]) { const f = 1 / T + s / T_SID;
+  if (Math.abs(f) > 1e-12) { const P = Math.abs(1 / f); if (P > 1e3 && P < 1e7) o.push(P); } } return o; }
+function design(t, per, K) { return t.map(x => { const r = [1];
+  for (const P of per) for (let j = 1; j <= K; j++) r.push(Math.sin(2 * Math.PI * j * x / P), Math.cos(2 * Math.PI * j * x / P));
+  return r; }); }
+function ridge(A, y, lam = 1e-3) {
+  const n = A[0].length, M = [];
+  for (let i = 0; i < n; i++) M.push(new Array(n + 1).fill(0));
+  for (let k = 0; k < A.length; k++) for (let i = 0; i < n; i++) { M[i][n] += A[k][i] * y[k];
+    for (let j = 0; j < n; j++) M[i][j] += A[k][i] * A[k][j]; }
+  let tr = 0; for (let i = 0; i < n; i++) tr += M[i][i];
+  for (let i = 0; i < n; i++) M[i][i] += lam * tr / n;
+  for (let c = 0; c < n; c++) {
+    let p = c; for (let i = c + 1; i < n; i++) if (Math.abs(M[i][c]) > Math.abs(M[p][c])) p = i;
+    if (Math.abs(M[p][c]) < 1e-12) return null;
+    [M[c], M[p]] = [M[p], M[c]];
+    for (let i = 0; i < n; i++) { if (i === c) continue; const f = M[i][c] / M[c][c];
+      for (let j = c; j <= n; j++) M[i][j] -= f * M[c][j]; }
+  }
+  return M.map((r, i) => r[n] / r[i]);
+}
+function fitColumn(tt, obs, tq, per) {
+  const t0 = tt[0], cut = t0 + (tt[tt.length - 1] - t0) * 6 / 7;
+  const ai = [], bi = []; tt.forEach((t, i) => (t <= cut ? ai : bi).push(i));
+  const flat = v => ({ pred: tq.map(() => v), sigma: Math.sqrt(mean(obs.map(o => (o - v) ** 2))) });
+  if (ai.length < 12 || bi.length < 4) return flat(mean(obs));
+  const ta = ai.map(i => tt[i] - t0), ya = ai.map(i => obs[i]), tb = bi.map(i => tt[i] - t0), yb = bi.map(i => obs[i]);
+  let best = { err: rms(yb, yb.map(() => mean(ya))), K: 0 };
+  for (let K = 1; K <= 3; K++) { const c = ridge(design(ta, per, K), ya); if (!c) continue;
+    const e = rms(yb, design(tb, per, K).map(r => r.reduce((s, v, j) => s + v * c[j], 0)));
+    if (e < best.err) best = { err: e, K }; }
+  if (!best.K) return { ...flat(mean(obs)), sigma: best.err };
+  const c = ridge(design(tt.map(t => t - t0), per, best.K), obs);
+  if (!c) return flat(mean(obs));
+  const lo = Math.min(...obs), hi = Math.max(...obs), pad = 2 * (hi - lo);
+  return { sigma: best.err, pred: design(tq.map(t => t - t0), per, best.K)
+    .map(r => Math.max(lo - pad, Math.min(hi + pad, r.reduce((s, v, j) => s + v * c[j], 0)))) };
+}
+function parseTime(s) {
+  let m = s.match(/^\s*(\d+)\/(\d+)\/(\d+)\s+(\d+):(\d+)/);
+  if (m) return Date.UTC(+m[3], +m[1] - 1, +m[2], +m[4], +m[5]) / 1000;
+  m = s.match(/^\s*(\d+)-(\d+)-(\d+)[ T](\d+):(\d+)/);
+  if (m) return Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4], +m[5]) / 1000;
+  return NaN;
+}
+const stamp = t => new Date(t * 1000).toISOString().slice(0, 19).replace("T", " ");
+function predictUpload(text, orbit, name) {
+  const seen = new Set();
+  const train = text.trim().split(/\r?\n/).slice(1).filter(l => !seen.has(l) && seen.add(l))
+    .map(l => { const c = l.split(","); return [parseTime(c[0]), +c[1], +c[2], +c[3], +c[4]]; })
+    .filter(r => r.every(Number.isFinite)).sort((a, b) => a[0] - b[0]);
+  if (train.length < 8) throw new Error("This file has fewer than 8 readable rows. It needs utc_time and four error columns.");
+  const tt = train.map(r => r[0]), tq = [];
+  for (let k = 1; k <= 96; k++) tq.push(tt[tt.length - 1] + 900 * k);
+  const meo = beats(43082);
+  const pers = orbit === "GEO" ? [[T_SID, T_SID / 2], [T_SID, T_SID / 2], [T_SID, T_SID / 2], [T_SID]]
+                               : [meo, meo, [43082], [43082]];
+  const fits = pers.map((p, c) => fitColumn(tt, train.map(r => r[c + 1]), tq, p));
+  const pred = tq.map((t, i) => [t, ...fits.map(f => f.pred[i]), ...fits.map(f => f.sigma)]);
+  const csv = "utc_time,x_error,y_error,z_error,satclockerror,x_error_sigma,y_error_sigma,z_error_sigma,satclockerror_sigma\n" +
+    pred.map(r => [stamp(r[0]), ...r.slice(1)].join(",")).join("\n") + "\n";
+  return { orbit, name, file: name, train, test: [], pred, csv, uploaded: true };
+}
+
+/* ---------- where the satellite is drawn (the files carry errors, not positions) ---------- */
+function satPos(t, orbit) {
+  if (orbit === "GEO") return [0.6 * Math.sin(2 * Math.PI * t / T_SID), 83 + 0.3 * Math.sin(4 * Math.PI * t / T_SID), 1.5];
+  const u = 2 * Math.PI * t / 43082, inc = 55 * Math.PI / 180;
+  const lat = Math.asin(Math.sin(inc) * Math.sin(u)) * 180 / Math.PI;
+  let lng = (Math.atan2(Math.cos(inc) * Math.sin(u), Math.cos(u)) - 2 * Math.PI * t / T_SID) * 180 / Math.PI + 77;
+  lng = ((lng + 540) % 360) - 180;
+  return [lat, lng, 0.9];
+}
+
+/* ---------- drawing ---------- */
+function dot(cls) { const d = document.createElement("div"); d.className = cls + " sat-dot"; return d; }
+function initGlobe() {
+  try {
+    globe = Globe()($("globe"))
+      .backgroundColor("#04081a")
+      .globeImageUrl("https://unpkg.com/three-globe@2.45.0/example/img/earth-night.jpg")
+      .backgroundImageUrl("https://unpkg.com/three-globe@2.45.0/example/img/night-sky.png")
+      .pathPointAlt(p => p[2]).pathColor(() => "rgba(56,189,248,0.75)").pathStroke(1.2).pathTransitionDuration(0)
+      .htmlLat(d => d.lat).htmlLng(d => d.lng).htmlAltitude(d => d.alt).htmlElement(d => d.el).htmlTransitionDuration(0);
+    globe.controls().autoRotate = false;
+    sizeGlobe();
+  } catch (e) { globe = null; $("scaleNote").textContent = "3D view needs WebGL, which this browser has switched off."; }
+}
+function sizeGlobe() { if (globe) { const b = $("globeBox"); globe.width(b.clientWidth).height(b.clientHeight); } }
+function initMap() {
+  map = L.map("map", { zoomControl: false, attributionControl: true, dragging: false, scrollWheelZoom: false,
+    doubleClickZoom: false, boxZoom: false, keyboard: false, touchZoom: false }).setView(RECEIVER, 21);
+  L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    { maxNativeZoom: 18, maxZoom: 23, className: "translucent-satellite-tiles", attribution: "Imagery: Esri" }).addTo(map);
+  const icon = cls => L.divIcon({ className: "gnss-marker-container", html: `<div class="${cls}"></div>`, iconSize: [16, 16] });
+  mapMarks = { red: L.marker(RECEIVER, { icon: icon("gnss-marker-deviated") }).addTo(map),
+               green: L.marker(RECEIVER, { icon: icon("gnss-marker-corrected") }).addTo(map) };
+}
+function initCharts() {
+  Chart.defaults.color = "#6f84a3"; Chart.defaults.font.family = '"Courier New", monospace'; Chart.defaults.font.size = 10;
+  charts = COLS.map((_, c) => new Chart($("ch" + c), {
+    type: "line",
+    data: { datasets: [
+      { label: "+1 sigma", data: [], borderWidth: 0, pointRadius: 0, fill: "+1", backgroundColor: "rgba(56,189,248,0.16)" },
+      { label: "-1 sigma", data: [], borderWidth: 0, pointRadius: 0 },
+      { label: "the 7 days given", data: [], showLine: false, pointRadius: 1.6, pointBackgroundColor: "#8ea3c2", borderColor: "#8ea3c2" },
+      { label: "day 8 predicted", data: [], borderColor: "#38bdf8", borderWidth: 2, pointRadius: 0 },
+      { label: "day 8 measured", data: [], showLine: false, pointRadius: 2.6, pointBackgroundColor: "#10b981", borderColor: "#10b981" },
+      { label: "now", data: [], showLine: false, pointRadius: 5, pointBackgroundColor: "#ef4444", borderColor: "#fff" },
+    ] },
+    options: { animation: false, responsive: true, maintainAspectRatio: false, parsing: false,
+      plugins: { legend: { labels: { boxWidth: 8, filter: i => !i.text.includes("sigma") && i.text !== "now" } }, tooltip: { enabled: false } },
+      scales: { x: { type: "linear", title: { display: true, text: "days" }, grid: { color: "rgba(59,130,246,0.12)" } },
+                y: { grid: { color: "rgba(59,130,246,0.12)" } } } },
+  }));
+}
+function loadCharts() {
+  const t0 = cur.train[0][0], d = t => (t - t0) / DAY;
+  charts.forEach((ch, c) => {
+    const s = ch.data.datasets, lo = Math.min(...cur.pred.map(r => r[c + 1] - r[c + 5])), hi = Math.max(...cur.pred.map(r => r[c + 1] + r[c + 5]));
+    const span = Math.max(hi - lo, 1e-6);
+    s[0].data = cur.pred.map(r => ({ x: d(r[0]), y: r[c + 1] + r[c + 5] }));
+    s[1].data = cur.pred.map(r => ({ x: d(r[0]), y: r[c + 1] - r[c + 5] }));
+    s[2].data = cur.train.map(r => ({ x: d(r[0]), y: r[c + 1] }));
+    s[3].data = cur.pred.map(r => ({ x: d(r[0]), y: r[c + 1] }));
+    s[4].data = cur.test.map(r => ({ x: d(r[0]), y: r[c + 1] }));
+    /* the corrupted GEO rows would flatten everything else, so the axis follows the prediction */
+    ch.options.scales.y.min = lo - 1.5 * span; ch.options.scales.y.max = hi + 1.5 * span;
+  });
+}
+function drawPhasor() {
+  const cv = $("phasor"), w = $("phWrap"), W = w.clientWidth, H = w.clientHeight, dpr = window.devicePixelRatio || 1;
+  if (!W || !H) return;
+  cv.width = W * dpr; cv.height = H * dpr; cv.style.width = W + "px"; cv.style.height = H + "px";
+  const g = cv.getContext("2d"); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H);
+  const cx = W / 2, cy = H / 2, R = Math.min(W, H) / 2 - 16, vals = cur.pred.map(r => r[4]);
+  const lo = Math.min(...vals), hi = Math.max(...vals), span = Math.max(hi - lo, 1e-9);
+  const rad = v => R * (0.35 + 0.6 * (v - lo) / span), ang = i => -Math.PI / 2 + 2 * Math.PI * i / vals.length;
+  g.strokeStyle = "rgba(59,130,246,0.25)"; g.lineWidth = 1;
+  for (const f of [0.35, 0.65, 0.95]) { g.beginPath(); g.arc(cx, cy, R * f, 0, 2 * Math.PI); g.stroke(); }
+  g.fillStyle = "#6f84a3"; g.font = '9px "Courier New"'; g.textAlign = "center";
+  [["0h", 0, -1], ["6h", 1, 0], ["12h", 0, 1], ["18h", -1, 0]].forEach(([t, x, y]) => g.fillText(t, cx + x * (R + 9), cy + y * (R + 9) + 3));
+  g.strokeStyle = "#10b981"; g.lineWidth = 1.8; g.shadowColor = "#10b981"; g.shadowBlur = 6; g.beginPath();
+  vals.forEach((v, i) => { const x = cx + rad(v) * Math.cos(ang(i)), y = cy + rad(v) * Math.sin(ang(i)); i ? g.lineTo(x, y) : g.moveTo(x, y); });
+  g.closePath(); g.stroke();
+  const x = cx + rad(vals[idx]) * Math.cos(ang(idx)), y = cy + rad(vals[idx]) * Math.sin(ang(idx));
+  g.strokeStyle = "#ef4444"; g.shadowColor = "#ef4444"; g.lineWidth = 2; g.beginPath(); g.moveTo(cx, cy); g.lineTo(x, y); g.stroke();
+  g.fillStyle = "#ef4444"; g.beginPath(); g.arc(x, y, 3.5, 0, 2 * Math.PI); g.fill(); g.shadowBlur = 0;
+  $("phVal").textContent = `${vals[idx].toFixed(4)} m = ${(vals[idx] / 0.299792458).toFixed(2)} ns`;
+}
+const f3 = v => (v >= 0 ? "+" : "") + v.toFixed(3);
+function render() {
+  const r = cur.pred[idx], t = r[0], el = t - cur.pred[0][0], p2 = n => String(Math.floor(n)).padStart(2, "0");
+  $("tlTime").textContent = stamp(t) + " UTC";
+  $("tlErr").innerHTML = `<span>X ${f3(r[1])}</span><span>Y ${f3(r[2])}</span><span>Z ${f3(r[3])}</span><span>CLK ${f3(r[4])}</span>`;
+  $("hudCoords").textContent = `X ${f3(r[1])}  Y ${f3(r[2])}  Z ${f3(r[3])} m`;
+  $("hudTimer").textContent = `${p2(el / DAY)}:${p2(el % DAY / 3600)}:${p2(el % 3600 / 60)}:${p2(el % 60)}`;
+  COLS.forEach((_, c) => { $("cv" + c).textContent = `${f3(r[c + 1])} ± ${r[c + 5].toFixed(3)}`;
+    if (charts[c]) { charts[c].data.datasets[5].data = [{ x: (t - cur.train[0][0]) / DAY, y: r[c + 1] }]; charts[c].update("none"); } });
+  if (globe) {
+    const [lat, lng, alt] = satPos(t, cur.orbit), k = cur.amp;
+    globe.htmlElementsData([
+      { lat: lat + r[2] * k, lng: lng + r[1] * k, alt: alt + r[3] * k / 60, el: cur.redEl },
+      { lat, lng, alt, el: cur.greenEl }]);
+  }
+  if (map) {
+    const dLat = r[2] / 111320, dLng = r[1] / (111320 * Math.cos(RECEIVER[0] * Math.PI / 180));
+    mapMarks.red.setLatLng([RECEIVER[0] + dLat, RECEIVER[1] + dLng]);
+    $("mapOff").textContent = `${Math.hypot(r[1], r[2]).toFixed(2)} m (E ${f3(r[1])}, N ${f3(r[2])})`;
+  }
+  drawPhasor();
+}
+function show(set, note) {
+  cur = set; idx = 0; $("slider").max = cur.pred.length - 1; $("slider").value = 0;
+  const big = Math.max(...cur.pred.map(r => Math.max(Math.abs(r[1]), Math.abs(r[2]), Math.abs(r[3]))), 1e-6);
+  cur.amp = 5 / big; cur.redEl = dot("gnss-marker-deviated"); cur.greenEl = dot("gnss-marker-corrected");
+  if (globe) {
+    const path = []; for (let t = cur.pred[0][0]; t <= cur.pred[0][0] + DAY; t += 300) path.push(satPos(t, cur.orbit));
+    const [lat, lng] = satPos(cur.pred[0][0], cur.orbit);
+    globe.pathsData([path]).pointOfView({ lat: lat * 0.4, lng, altitude: cur.orbit === "GEO" ? 3.6 : 3.2 }, 600);
+    $("scaleNote").innerHTML = `${cur.orbit} orbit, height not to scale<br>red is drawn ${Math.round(cur.amp * 111320).toLocaleString()} times further out than it is`;
+  }
+  loadCharts(); $("status").className = "inference-status"; $("status").textContent = note; render();
+}
+function pick(key) {
+  const d = window.SH_DATA[key];
+  show(d, `${d.file}: ${d.train.length} rows in, ${d.pred.length} predictions out.`);
+}
+function setPlaying(on) {
+  playing = on; $("play").innerHTML = on ? "&#10074;&#10074;" : "&#9654;"; clearInterval(timer);
+  if (on) timer = setInterval(() => { idx = (idx + 1) % cur.pred.length; $("slider").value = idx; render(); }, 1000 / (+$("speed").value * 2));
+}
+
+/* ---------- wiring ---------- */
+let uploadText = null, uploadName = "";
+$("dataset").onchange = e => { $("orbitRow").hidden = true; pick(e.target.value); };
+$("file").onchange = async e => {
+  const f = e.target.files[0]; if (!f) return;
+  uploadText = await f.text(); uploadName = f.name; $("orbitRow").hidden = false;
+  $("orbit").value = /geo/i.test(f.name) ? "GEO" : "MEO";
+  $("status").className = "inference-status"; $("status").textContent = `${f.name} is loaded. Choose its orbit and press Predict day 8.`;
+  e.target.value = "";
+};
+$("run").onclick = () => {
+  try { show(predictUpload(uploadText, $("orbit").value, uploadName), `${uploadName}: fitted here in your browser.`); }
+  catch (err) { $("status").className = "inference-status inference-status--error"; $("status").textContent = err.message; }
+};
+$("download").onclick = () => {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([cur.csv], { type: "text/csv" }));
+  a.download = cur.file.replace(/\.csv$/i, "") + "_day8.csv"; a.click(); URL.revokeObjectURL(a.href);
+};
+$("slider").oninput = e => { idx = +e.target.value; render(); };
+$("play").onclick = () => setPlaying(!playing);
+$("speed").onchange = () => setPlaying(playing);
+function track(two) {
+  $("app").classList.toggle("track2", two);
+  $("t1").classList.toggle("track-box--active", !two); $("t2").classList.toggle("track-box--active", two);
+  if (two) charts.forEach(c => c.resize()); else sizeGlobe();
+}
+$("t1").onclick = () => track(false); $("t2").onclick = () => track(true);
+new ResizeObserver(() => { sizeGlobe(); drawPhasor(); }).observe($("app"));
+
+initGlobe(); initMap(); initCharts(); pick("meo2"); setPlaying(true);
+if (location.hash === "#charts") track(true);
+</script>
+</body>
+</html>

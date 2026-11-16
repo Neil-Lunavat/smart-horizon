@@ -1,0 +1,20 @@
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\taskA_nn.py:21: UserWarning: expandable_segments not supported on this platform (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\pytorch\c10/cuda/CUDAAllocatorConfig.h:28.)
+  Eg=torch.tensor(np.nan_to_num(E),device=dev)
+samples 980,967  train 766,915 val 61,113 test 83,111  seq len 241
+target residual sd (m): ['0.180', '0.614', '0.464', '0.850']
+
+=== GRU
+  GRU ep0 val RMS dR=0.116 dA=0.511 dC=0.347 dClk_m=0.451  [110s]
+  GRU ep1 val RMS dR=0.112 dA=0.561 dC=0.342 dClk_m=0.500  [111s]
+  GRU ep2 val RMS dR=0.106 dA=0.551 dC=0.338 dClk_m=0.457  [110s]
+  GRU ep3 val RMS dR=0.107 dA=0.541 dC=0.341 dClk_m=0.449  [110s]
+  GRU ep4 val RMS dR=0.106 dA=0.556 dC=0.340 dClk_m=0.456  [112s]
+  GRU ep5 val RMS dR=0.106 dA=0.556 dC=0.346 dClk_m=0.457  [112s]
+  GRU TEST  dR=0.115  dA=0.588  dC=0.425  dClk_m=0.358   SISRE=0.380
+
+=== TCN
+  TCN ep0 val RMS dR=0.093 dA=0.473 dC=0.298 dClk_m=0.394  [197s]
+  TCN ep1 val RMS dR=0.093 dA=0.491 dC=0.336 dClk_m=0.424  [196s]
+  TCN ep2 val RMS dR=0.091 dA=0.523 dC=0.313 dClk_m=0.461  [196s]
+  TCN ep3 val RMS dR=0.089 dA=0.508 dC=0.313 dClk_m=0.457  [196s]
+  TCN ep4 val RMS dR=0.088 dA=0.515 dC=0.305 dClk_m=0.492  [197s]

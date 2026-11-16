@@ -1,0 +1,40 @@
+corpus (103, 23424, 4)  valid 84.8%
+building pool of 12000 windows (deterministic fit computed once) ...
+    2000/12000 windows  [31s]
+    4000/12000 windows  [62s]
+    6000/12000 windows  [93s]
+    8000/12000 windows  [124s]
+    10000/12000 windows  [153s]
+    12000/12000 windows  [183s]
+pool 12000  GEO 938  MEO 11062
+
+5 folds: cut=9838 tr=4582 te=1124, cut=12063 tr=5737 te=1055, cut=14288 tr=6797 te=1156, cut=16513 tr=7919 te=1158, cut=18739 tr=9126 te=1191
+
+
+================================================================================
+VALUE directly  -- net RMS vs deterministic RMS, per fold
+================================================================================
+  mlp    GEO  net  0.629+-0.058  det  0.402+-0.102   +56.3%  worse wins 0/5  folds[0.71 0.65 0.66 0.58 0.55]  [3s]
+  mlp    MEO  net  0.674+-0.024  det  0.407+-0.011   +65.8%  worse wins 0/5  folds[0.72 0.65 0.68 0.66 0.67]  [3s]
+  gru    GEO  net  0.633+-0.058  det  0.402+-0.102   +57.3%  worse wins 0/5  folds[0.71 0.66 0.66 0.58 0.55]  [20s]
+  gru    MEO  net  0.670+-0.019  det  0.407+-0.011   +64.8%  worse wins 0/5  folds[0.70 0.65 0.68 0.66 0.66]  [20s]
+  lstm   GEO  net  0.647+-0.057  det  0.402+-0.102   +60.8%  worse wins 0/5  folds[0.71 0.67 0.69 0.60 0.56]  [32s]
+  lstm   MEO  net  0.701+-0.019  det  0.407+-0.011   +72.4%  worse wins 0/5  folds[0.73 0.68 0.71 0.69 0.69]  [32s]
+  tcn    GEO  net  0.634+-0.061  det  0.402+-0.102   +57.7%  worse wins 0/5  folds[0.71 0.66 0.67 0.57 0.55]  [27s]
+  tcn    MEO  net  0.697+-0.024  det  0.407+-0.011   +71.4%  worse wins 0/5  folds[0.74 0.68 0.71 0.68 0.67]  [27s]
+/workspace/sh/taskB_nn.py:113: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  s.f = nn.TransformerEncoder(lay, 3)
+  xfmr   GEO  net  0.643+-0.054  det  0.402+-0.102   +59.9%  worse wins 0/5  folds[0.71 0.66 0.68 0.60 0.56]  [125s]
+  xfmr   MEO  net  0.748+-0.023  det  0.407+-0.011   +83.9%  worse wins 0/5  folds[0.76 0.71 0.76 0.77 0.74]  [125s]
+
+================================================================================
+RESIDUAL of the deterministic model  -- net RMS vs deterministic RMS, per fold
+================================================================================
+  mlp    GEO  net  0.404+-0.104  det  0.402+-0.102    +0.4%  ties  wins 1/5  folds[0.57 0.46 0.38 0.29 0.32]  [3s]
+  mlp    MEO  net  0.412+-0.012  det  0.407+-0.011    +1.3%  ties  wins 0/5  folds[0.42 0.39 0.42 0.42 0.42]  [3s]
+  gru    GEO  net  0.402+-0.102  det  0.402+-0.102    -0.1%  ties  wins 2/5  folds[0.57 0.45 0.38 0.29 0.32]  [20s]
+  gru    MEO  net  0.405+-0.011  det  0.407+-0.011    -0.4%  ties  wins 5/5  folds[0.41 0.38 0.41 0.41 0.41]  [20s]
+  tcn    GEO  net  0.406+-0.102  det  0.402+-0.102    +0.8%  ties  wins 0/5  folds[0.57 0.46 0.38 0.29 0.32]  [27s]
+  tcn    MEO  net  0.411+-0.012  det  0.407+-0.011    +1.1%  ties  wins 0/5  folds[0.42 0.39 0.42 0.41 0.41]  [27s]
+  xfmr   GEO  net  0.402+-0.102  det  0.402+-0.102    +0.0%  ties  wins 1/5  folds[0.57 0.45 0.38 0.29 0.32]  [125s]
+  xfmr   MEO  net  0.407+-0.011  det  0.407+-0.011    +0.0%  ties  wins 2/5  folds[0.41 0.38 0.41 0.41 0.41]  [125s]

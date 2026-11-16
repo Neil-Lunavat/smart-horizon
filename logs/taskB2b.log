@@ -1,0 +1,65 @@
+grid (103, 23424, 4)  valid 84.8%
+
+==========================================================================================
+IRREGULAR (~30% + gaps) -- matches the delivered files   (900 windows)
+==========================================================================================
+
+--- GEO+GSO  77 windows, 2,669 query points
+method                  x_err       y_err       z_err   clock_err      mean
+mean                    0.759       0.484       0.864       0.475     0.645
+selfval                 0.822       0.305       0.162       0.445     0.433
+selfval+clkmean         0.822       0.305       0.162       0.475     0.441
+(do nothing)            1.992       1.768       0.883       5.859     2.625
+
+  residuals of selfval+clkmean:
+  target          std    skew     kurt  pooled W  per-window W
+  x_err         0.814   -3.84     25.5    0.5441        0.9367
+  y_err         0.305   -0.25      3.8    0.9599        0.9497
+  z_err         0.162   -0.66      7.1    0.9600        0.9470
+  clock_err     0.475    3.11     29.6    0.8211        0.9330
+
+--- MEO  823 windows, 28,237 query points
+method                  x_err       y_err       z_err   clock_err      mean
+mean                    0.808       0.809       0.772       0.539     0.732
+selfval                 0.463       0.450       0.546       0.577     0.509
+selfval+clkmean         0.463       0.450       0.546       0.539     0.499
+(do nothing)            0.805       0.805       0.777       6.547     2.234
+
+  residuals of selfval+clkmean:
+  target          std    skew     kurt  pooled W  per-window W
+  x_err         0.463    0.02      8.0    0.9058        0.9457
+  y_err         0.450    0.11      6.4    0.9270        0.9462
+  z_err         0.546    0.04      2.2    0.9658        0.9402
+  clock_err     0.539    0.99     14.6    0.8689        0.9391
+
+==========================================================================================
+UNIFORM 15-min -- upper bound   (900 windows)
+==========================================================================================
+
+--- GEO+GSO  83 windows, 2,802 query points
+method                  x_err       y_err       z_err   clock_err      mean
+mean                    0.748       0.539       0.726       0.592     0.651
+selfval                 0.809       0.340       0.187       0.590     0.481
+selfval+clkmean         0.809       0.340       0.187       0.592     0.482
+(do nothing)            1.927       2.070       0.781       6.461     2.810
+
+  residuals of selfval+clkmean:
+  target          std    skew     kurt  pooled W  per-window W
+  x_err         0.800    1.86      7.6    0.7663        0.9359
+  y_err         0.340   -0.13      6.9    0.9390        0.9483
+  z_err         0.186    2.27     32.4    0.8735        0.9482
+  clock_err     0.591    1.55     20.8    0.7980        0.9226
+
+--- MEO  817 windows, 27,230 query points
+method                  x_err       y_err       z_err   clock_err      mean
+mean                    0.814       0.830       0.802       0.553     0.750
+selfval                 0.445       0.441       0.530       0.582     0.499
+selfval+clkmean         0.445       0.441       0.530       0.553     0.492
+(do nothing)            0.814       0.830       0.807       6.648     2.275
+
+  residuals of selfval+clkmean:
+  target          std    skew     kurt  pooled W  per-window W
+  x_err         0.445   -0.01      4.9    0.9392        0.9459
+  y_err         0.441   -0.02      5.0    0.9407        0.9478
+  z_err         0.530   -0.12      1.9    0.9815        0.9368
+  clock_err     0.552    3.32     55.0    0.7308        0.9408

@@ -1,0 +1,16 @@
+SMART-HORIZON demo — figures in script order (match Act numbers to DEMO_SCRIPT.md)
+
+Act 02  ->  02__f01_raw_data.png
+Act 03a  ->  03a__f03_duplicates.png
+Act 03b  ->  03b__f21_ml_plateau.png
+Act 04  ->  04__f20_benchmark.png
+Act 05a  ->  05a__f05_volatility_ramp.png
+Act 05b  ->  05b__f18_ceiling.png
+Act 06a  ->  06a__f06_beat_frequencies.png
+Act 06b  ->  06b__f07_periodogram.png
+Act 06c  ->  06c__f11_recovery_distribution.png
+Act 07a  ->  07a__f22_how_it_works.png
+Act 07b  ->  07b__f14_results.png
+Act 07c-optional  ->  07c-optional__f15_meo_predictions.png
+Act 07d  ->  07d__f16_geo_artifact.png
+Act 07e  ->  07e__f13_artifact_injection.png

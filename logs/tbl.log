@@ -1,0 +1,20 @@
+corpus (103, 23424, 4)  valid 84.8%
+train 900 windows, test 900 windows
+
+============================================================================
+GEO/GSO: 74 train / 76 test windows
+============================================================================
+target       determ.  +learned    change      verdict
+x_err          0.426     0.487    +14.3%        HURTS
+y_err          0.293     0.320     +9.0%        HURTS
+z_err          0.204     0.219     +7.4%        HURTS
+clock_err      0.286     0.318    +11.2%        HURTS
+
+============================================================================
+MEO: 826 train / 824 test windows
+============================================================================
+target       determ.  +learned    change      verdict
+x_err          0.462     0.458     -0.9%      no gain
+y_err          0.474     0.475     +0.2%      no gain
+z_err          0.396     0.399     +0.9%      no gain
+clock_err      0.327     0.339     +3.5%        HURTS

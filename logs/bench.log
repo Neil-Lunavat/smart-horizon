@@ -1,0 +1,237 @@
+corpus (103, 23424, 4)  valid 84.8%
+building 2600 windows ...
+    500/2600  [10s]
+    1000/2600  [20s]
+    1500/2600  [30s]
+    2000/2600  [40s]
+    2500/2600  [51s]
+pool 2600  GEO 210  MEO 2390
+
+24 folds
+
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:737: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  mlefit = super().fit(
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:737: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  mlefit = super().fit(
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:737: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  mlefit = super().fit(
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:737: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  mlefit = super().fit(
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:737: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  mlefit = super().fit(
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:737: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  mlefit = super().fit(
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:737: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  mlefit = super().fit(
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:737: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  mlefit = super().fit(
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:737: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  mlefit = super().fit(
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:737: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  mlefit = super().fit(
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:737: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  mlefit = super().fit(
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:737: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  mlefit = super().fit(
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:737: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  mlefit = super().fit(
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:737: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  mlefit = super().fit(
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:737: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  mlefit = super().fit(
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:737: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  mlefit = super().fit(
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:737: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  mlefit = super().fit(
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:737: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  mlefit = super().fit(
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:737: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  mlefit = super().fit(
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:737: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  mlefit = super().fit(
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:737: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  mlefit = super().fit(
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:737: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  mlefit = super().fit(
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:679: EstimationWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  start_params = self.start_params
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\statsmodels\tsa\statespace\mlemodel.py:737: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  mlefit = super().fit(

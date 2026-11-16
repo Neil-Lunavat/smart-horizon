@@ -1,0 +1,61 @@
+corpus (103, 23424, 4)  valid 84.8%
+
+======================================================================================
+IRREGULAR (~30% + multi-hour gaps) -- their format  (800 windows)
+======================================================================================
+
+--- GEO / GSO   81 windows, 2,492 query points
+method              x_err       y_err       z_err   clock_err      mean
+do nothing          2.215       1.945       0.829       5.651     2.660
+window mean         0.938       0.532       0.786       0.429     0.671
+MODEL               0.611       0.315       0.264       0.358     0.387
+reduction           72.4%       83.8%       68.1%       93.7%     85.5%
+
+  residuals:  target         std    skew    kurt  per-window W
+              x_err        0.610   -0.61     8.0        0.9371
+              y_err        0.315   -1.54    13.0        0.9448
+              z_err        0.263   -1.90    25.7        0.9472
+              clock_err    0.357   -0.11     4.4        0.9319
+
+--- MEO   719 windows, 24,072 query points
+method              x_err       y_err       z_err   clock_err      mean
+do nothing          0.832       0.819       0.803       7.216     2.417
+window mean         0.835       0.822       0.799       0.622     0.770
+MODEL               0.467       0.449       0.396       0.529     0.460
+reduction           43.8%       45.2%       50.6%       92.7%     81.0%
+
+  residuals:  target         std    skew    kurt  per-window W
+              x_err        0.467   -0.03     6.6        0.9448
+              y_err        0.449    0.07     4.1        0.9468
+              z_err        0.396   -0.05     7.4        0.9492
+              clock_err    0.529    3.67    65.2        0.9404
+
+======================================================================================
+UNIFORM 15-min -- upper bound  (800 windows)
+======================================================================================
+
+--- GEO / GSO   67 windows, 2,121 query points
+method              x_err       y_err       z_err   clock_err      mean
+do nothing          1.872       1.894       0.845       6.060     2.668
+window mean         0.683       0.495       0.812       0.577     0.642
+MODEL               0.612       0.292       0.190       0.482     0.394
+reduction           67.3%       84.6%       77.5%       92.0%     85.2%
+
+  residuals:  target         std    skew    kurt  per-window W
+              x_err        0.610   -1.43     8.1        0.9345
+              y_err        0.291    0.70     3.0        0.9551
+              z_err        0.190    0.81    11.5        0.9409
+              clock_err    0.477   -2.25     9.2        0.9195
+
+--- MEO   733 windows, 24,986 query points
+method              x_err       y_err       z_err   clock_err      mean
+do nothing          0.813       0.813       0.778       6.745     2.287
+window mean         0.813       0.814       0.769       0.513     0.727
+MODEL               0.427       0.411       0.348       0.479     0.416
+reduction           47.5%       49.4%       55.3%       92.9%     81.8%
+
+  residuals:  target         std    skew    kurt  per-window W
+              x_err        0.427   -0.86    10.3        0.9476
+              y_err        0.411   -0.18     8.6        0.9477
+              z_err        0.347   -0.33     7.6        0.9502
+              clock_err    0.479   -0.77    53.2        0.9417

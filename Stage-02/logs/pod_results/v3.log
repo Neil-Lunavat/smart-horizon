@@ -1,0 +1,46 @@
+samples 980,967  train 766,915 val 61,113 test 83,111
+per-system residual sd (m); rows G,E,C,J; cols dR,dA,dC,dClk_m
+[[0.174 0.902 0.575 0.288]
+ [0.12  0.238 0.176 0.823]
+ [0.152 0.309 0.286 1.234]
+ [0.462 1.096 1.282 0.32 ]]
+  seed 0 val NLL -1.0686  [44s]
+  seed 1 val NLL -1.0796  [43s]
+  seed 2 val NLL -1.0875  [43s]
+  seed 3 val NLL -1.0698  [43s]
+  seed 4 val NLL -1.0782  [43s]
+
+                            dR       dA       dC   dClk_m     SISRE
+raw broadcast            1.300    0.748    0.452    7.071     7.393
+7d window mean           0.144    0.642    0.431    0.400     0.417
+v3 ensemble              0.083    0.517    0.353    0.332     0.343
+v3 + blend               0.083    0.526    0.352    0.325     0.337
+
+per-system SISRE:
+sys        raw  baseline       v3     cut
+G        1.464     0.352    0.317   78.3%
+E        0.851     0.448    0.286   66.5%
+C       12.762     0.458    0.400   96.9%
+J        2.547     0.353    0.270   89.4%
+ALL      7.393     0.417    0.337   95.4%
+
+--- RAW residuals (pooled: a scale mixture, so expected to be heavy-tailed) ---
+target       mean      std    skew     kurt  ShapiroW
+dR        -0.0040   0.0832    0.39     35.1    0.9007
+dA         0.0413   0.5152    0.41     12.6    0.8290
+dC        -0.0041   0.3534    0.42     81.1    0.7819
+dClk_m    -0.0126   0.3322   -1.02     33.1    0.8371
+
+--- STANDARDISED residuals (y-mu)/sigma : these are the ones that should be N(0,1) ---
+target       mean      std    skew     kurt  ShapiroW        p
+dR        -0.0527   0.9754   -0.00      1.8    0.9895   0.0000
+dA         0.0795   1.0095    0.12      1.4    0.9888   0.0000
+dC        -0.0256   1.0240   -0.01      0.8    0.9981   0.0001
+dClk_m    -0.0331   0.9247   -0.03     23.0    0.8531   0.0000
+
+--- calibration: fraction of truth inside the predicted interval ---
+target   1s(68.3%)  2s(95.4%)  3s(99.7%)
+dR           72.5%      95.7%      99.3%
+dA           70.8%      94.8%      99.2%
+dC           69.0%      94.7%      99.4%
+dClk_m       83.1%      97.2%      98.9%

@@ -1,0 +1,35 @@
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\taskA_tab.py:27: RuntimeWarning: Mean of empty slice
+  wm=np.nanmean(win,axis=1); ws=np.nanstd(win,axis=1)
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\numpy\lib\_nanfunctions_impl.py:1997: RuntimeWarning: Degrees of freedom <= 0 for slice.
+  var = nanvar(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\numpy\lib\_nanfunctions_impl.py:1215: RuntimeWarning: All-NaN slice encountered
+  return fnb._ureduce(a, func=_nanmedian, keepdims=keepdims,
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\taskA_tab.py:29: RuntimeWarning: Mean of empty slice
+  wm1=np.nanmean(win[:,:96],axis=1)           # most recent day
+C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\taskA_tab.py:30: RuntimeWarning: Mean of empty slice
+  wm3=np.nanmean(win[:,:288],axis=1)
+samples 980,967   train 766,915  val 61,113  test 83,111
+features 56   test span steps 21600..23422
+
+model                       dR       dA       dC   dClk_m      SISRE
+---------------------- -------  -------  -------  -------  --------
+raw broadcast             1.300    0.748    0.452    7.071     0.000
+7d-window mean            0.144    0.642    0.431    0.400     7.353
+7d-window median          0.146    0.651    0.432    0.406     7.354
+1d mean @lag              0.201    0.674    0.437    0.521     7.366
+persistence @lag          0.234    0.593    0.398    0.636     7.365
+ridge                     0.126    0.519    0.348    0.430     7.328
+XGBoost                   0.085    0.500    0.308    0.446     7.369
+
+residual normality of the XGBoost model (test set):
+target       mean      std    skew     kurt  ShapiroW
+dR        -0.0023   0.0851    2.38    110.2    0.9654
+dA         0.0303   0.4989    0.25     10.6    0.8552
+dC        -0.0016   0.3082    0.70     29.5    0.8512
+dClk_m    -0.0235   0.4454   -1.82     22.0    0.8716
+
+top features:
+  dR       sysn=0.43, wmed_dR=0.37, wm_dR=0.12, last_dR=0.02, wm3_dR=0.01, l96_dR=0.01
+  dA       last_dA=0.26, l96_dA=0.14, wmed_dR=0.04, wm_dA=0.04, ho_gap_s=0.03, l192_dA=0.03
+  dC       last_dC=0.25, l96_dC=0.13, sysn=0.06, l192_dC=0.06, ws_dC=0.04, clsn=0.04
+  dClk_m   wm_dClk_m=0.31, wm1_dClk_m=0.28, wm3_dClk_m=0.26, wm_dR=0.09, wmed_dClk_m=0.03, wmed_dR=0.02

@@ -1,0 +1,39 @@
+samples 980,967  train 766,915 val 61,113 test 83,111  seq len 241
+target residual sd (m): ['0.180', '0.614', '0.464', '0.850']
+
+=== MLP
+  MLP ep0 val RMS dR=0.094 dA=0.504 dC=0.315 dClk_m=0.401  [10s]
+  MLP ep1 val RMS dR=0.091 dA=0.510 dC=0.382 dClk_m=0.402  [10s]
+  MLP ep2 val RMS dR=0.090 dA=0.511 dC=0.322 dClk_m=0.424  [10s]
+  MLP ep3 val RMS dR=0.088 dA=0.498 dC=0.313 dClk_m=0.380  [10s]
+  MLP ep4 val RMS dR=0.086 dA=0.503 dC=0.323 dClk_m=0.396  [10s]
+  MLP ep5 val RMS dR=0.085 dA=0.504 dC=0.320 dClk_m=0.392  [10s]
+  MLP TEST  dR=0.090  dA=0.527  dC=0.347  dClk_m=0.346   SISRE=0.358
+
+=== GRU
+Traceback (most recent call last):
+  File "C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\taskA_nn.py", line 134, in <module>
+    P=run(nm,mk()); out[nm]=P
+  File "C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\taskA_nn.py", line 113, in run
+    v.append(((wm+m(x,wm,sysn[ix],clsn[ix])*ysd-y)**2).mean(0))
+                  ~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\torch\nn\modules\module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\torch\nn\modules\module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\taskA_nn.py", line 65, in forward
+    o,_=s.gru(torch.relu(s.inp(x)))
+        ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\torch\nn\modules\module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\torch\nn\modules\module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\Neil Lunavat\Desktop\SMART-HORIZON\.venv\Lib\site-packages\torch\nn\modules\rnn.py", line 1393, in forward
+    result = _VF.gru(
+        input,
+    ...<7 lines>...
+        self.batch_first,
+    )
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 12.03 GiB. GPU 0 has a total capacity of 6.00 GiB of which 0 bytes is free. Of the allocated memory 3.10 GiB is allocated by PyTorch, and 2.52 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)

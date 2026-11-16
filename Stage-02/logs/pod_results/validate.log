@@ -1,0 +1,28 @@
+total samples 980,967  span steps 960..23422
+
+============================================================================================
+TEST 1 -- RANDOM 80/20 (what you asked for) vs TIME SPLIT, same model, same data
+============================================================================================
+split                        n train   n test     raw    base    TEST   train     gap
+RANDOM 80/20                 686,676  196,194   7.272   0.760   0.611   0.614  -0.003
+TIME (held-out future)       766,915   83,111   7.393   0.417   0.367   0.683  -0.316
+
+============================================================================================
+TEST 2 -- ROLLING-ORIGIN FOLDS (retrained from scratch at each origin)
+============================================================================================
+fold                         n train   n test     raw    base    TEST   train     gap   cut%
+fold0 cut@12000              447,845   76,947   6.774   0.501   0.455   0.558  -0.103  93.3%
+fold1 cut@14400              543,371   87,201   7.438   1.655   1.595   0.573  +1.022  78.6%
+fold2 cut@16800              644,348   87,570   7.318   0.700   0.614   0.714  -0.100  91.6%
+fold3 cut@19200              753,749   87,134   7.396   0.537   0.520   0.773  -0.253  93.0%
+fold4 cut@21600              862,957   48,312   7.393   0.401   0.357   0.604  -0.247  95.2%
+
+  SISRE across folds: mean 0.708  sd 0.451  min 0.357  max 1.595
+  baseline  across folds: mean 0.759   model beats baseline in 5/5 folds
+
+============================================================================================
+TEST 3 -- SATELLITE HOLDOUT (unseen spacecraft) x unseen future
+============================================================================================
+unseen sats, seen time      257,883 raw  7.496  base  0.969  TEST  0.894  train  0.535  gap +0.359
+unseen sats + future         27,917 raw  7.906  base  0.412  TEST  0.370  train  0.536  gap -0.165
+seen sats + future           55,194 raw  7.120  base  0.420  TEST  0.375  train  0.537  gap -0.162

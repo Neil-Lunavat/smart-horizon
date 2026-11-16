@@ -1,0 +1,40 @@
+samples 980,967  train 766,915 val 61,113 test 83,111
+per-system residual sd (m); rows G,E,C,J; cols dR,dA,dC,dClk_m
+[[0.174 0.902 0.575 0.288]
+ [0.12  0.238 0.176 0.823]
+ [0.152 0.309 0.286 1.234]
+ [0.462 1.096 1.282 0.32 ]]
+  seed 0 val 0.4465  [27s]
+  seed 1 val 0.4478  [26s]
+  seed 2 val 0.4483  [23s]
+  seed 3 val 0.4446  [21s]
+  seed 4 val 0.4436  [21s]
+  seed 5 val 0.4426  [21s]
+
+blend weight on the model (1.0 = pure model, 0.0 = pure baseline):
+            dR        dA        dC    dClk_m
+  G       1.00      0.95      0.95      1.00
+  E       1.00      1.00      0.80      0.75
+  C       1.00      0.80      1.00      0.95
+  J       1.00      0.90      0.70      0.95
+
+                            dR       dA       dC   dClk_m     SISRE
+raw broadcast            1.300    0.748    0.452    7.071     7.393
+7d window mean           0.144    0.642    0.431    0.400     0.417
+v2 mlp ensemble          0.086    0.524    0.346    0.352     0.363
+v2 mlp + blend           0.086    0.527    0.350    0.341     0.353
+
+per-system SISRE:
+sys        raw  baseline  v2+blend     cut
+G        1.464     0.352     0.313   78.6%
+E        0.851     0.448     0.281   67.0%
+C       12.762     0.458     0.446   96.5%
+J        2.547     0.353     0.277   89.1%
+ALL      7.393     0.417     0.353   95.2%
+
+residual distribution (test):
+target       mean      std    skew     kurt  ShapiroW        p
+dR        -0.0024   0.0856    0.62     46.1    0.9089   0.0000
+dA         0.0295   0.5265    0.28     15.0    0.8169   0.0000
+dC        -0.0078   0.3495    0.26     51.0    0.7795   0.0000
+dClk_m     0.0156   0.3408   -7.11    438.2    0.5072   0.0000

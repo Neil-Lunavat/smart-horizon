@@ -1,0 +1,1078 @@
+/* ==========================================================================
+   Smart Horizon - 3D Canvas & Custom Styles
+   ========================================================================== */
+
+:root {
+  /* --------------------------------------------------------------------------
+     Canvas Background Color
+     Deep space dark blue
+     -------------------------------------------------------------------------- */
+  --canvas-bg: #04081a;
+}
+
+/* 3D Canvas container styling */
+.sphere-canvas-container {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  flex: 1;
+  position: relative;
+  background-color: var(--canvas-bg, #04081a);
+  overflow: hidden;
+}
+
+/* Three.js Canvas element */
+.sphere-canvas-container canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  outline: none;
+}
+
+/* 3D Canvas Top Bar (Holds title HUD and UTC timer without overlap) */
+.canvas-top-bar {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  pointer-events: none;
+  user-select: none;
+  z-index: 5;
+}
+
+/* 3D Canvas HUD overlay for Predicted Error title & telemetry */
+.canvas-hud {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "Courier New", "Lucida Console", Monaco, monospace;
+  font-size: 11.5px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  color: var(--text-accent);
+  background: rgba(11, 19, 38, 0.92);
+  border: var(--border-thickness) solid var(--border-color);
+  padding: 5px 10px;
+  border-radius: var(--border-radius-sm);
+  pointer-events: none;
+  user-select: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  flex-shrink: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.canvas-hud__title {
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.canvas-hud__legend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10.5px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.hud-tag--green {
+  color: #10b981;
+}
+
+.hud-tag--red {
+  color: #ef4444;
+}
+
+.canvas-hud__coords {
+  color: #38bdf8;
+  font-size: 10.5px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* 3D Canvas Top-Right Mission Timer (dd:hh:mm:ss) */
+.canvas-timer-hud {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: "Courier New", "Lucida Console", Monaco, monospace;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0.8px;
+  color: #38bdf8;
+  background: rgba(11, 19, 38, 0.92);
+  border: var(--border-thickness) solid var(--border-color);
+  padding: 5px 10px;
+  border-radius: var(--border-radius-sm);
+  pointer-events: none;
+  user-select: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.canvas-timer-hud__label {
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.canvas-timer-hud__val {
+  color: #38bdf8;
+  text-shadow: 0 0 6px rgba(56, 189, 248, 0.4);
+}
+
+/* Download Result Button */
+button.download-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--text-accent);
+  cursor: pointer;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+}
+
+button.download-btn:hover:not(:disabled),
+button.download-btn:focus-visible:not(:disabled) {
+  background: rgba(59, 130, 246, 0.2);
+}
+
+button.download-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  border-style: dashed;
+}
+
+/* Inference status indicator */
+.inference-status {
+  margin: 0 0 8px;
+  font-size: 12px;
+  color: var(--text-accent);
+  font-family: inherit;
+  line-height: 1.2;
+}
+
+.inference-status--error {
+  color: #ff4d4f;
+}
+
+/* ==========================================================================
+   Timeline Slider Styling (Bottom Panel)
+   ========================================================================== */
+.timeline-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0 14px;
+  gap: 14px;
+  box-sizing: border-box;
+}
+
+.timeline-play-btn {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border: var(--border-thickness) solid var(--border-color);
+  background: var(--card-bg-elevated);
+  color: var(--text-accent);
+  font-size: 14px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  border-radius: var(--border-radius-sm);
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.timeline-play-btn:hover,
+.timeline-play-btn:focus-visible {
+  background: rgba(59, 130, 246, 0.25);
+  border-color: var(--border-color-glow);
+  color: #ffffff;
+}
+
+.timeline-track-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  min-width: 0;
+  gap: 5px;
+}
+
+.timeline-info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-color);
+  font-family: "Courier New", "Lucida Console", Monaco, monospace;
+  white-space: nowrap;
+}
+
+.timeline-left-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.timeline-timestamp {
+  font-weight: bold;
+  color: var(--text-accent);
+}
+
+.timeline-badge {
+  font-size: 10px;
+  color: #38bdf8;
+  opacity: 0.9;
+}
+
+.timeline-errors {
+  display: flex;
+  gap: 10px;
+  color: #38bdf8;
+  font-size: 11px;
+}
+
+.timeline-hint {
+  opacity: 0.6;
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.timeline-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(59, 130, 246, 0.25);
+  outline: none;
+  cursor: pointer;
+  margin: 0;
+}
+
+.timeline-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #38bdf8;
+  border: 2px solid var(--bg-color);
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.8);
+  cursor: pointer;
+}
+
+.timeline-slider::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #38bdf8;
+  border: 2px solid var(--bg-color);
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.8);
+  cursor: pointer;
+}
+
+/* Timeline Speed Dropdown (1x, 2x, 4x, 8x, 16x) */
+.timeline-speed-wrapper {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.timeline-speed-select {
+  height: 38px;
+  padding: 0 8px;
+  border: var(--border-thickness) solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  background: var(--card-bg-elevated);
+  color: var(--text-accent);
+  font-family: "Courier New", "Lucida Console", Monaco, monospace;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+}
+
+.timeline-speed-select:hover,
+.timeline-speed-select:focus-visible {
+  border-color: var(--border-color-glow);
+  color: #ffffff;
+  background: rgba(59, 130, 246, 0.25);
+}
+
+/* ==========================================================================
+   Track 1 / Track 2 Selector Row (Right Column Top)
+   ========================================================================== */
+.track-selector-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 44px;
+  border: var(--border-thickness) solid var(--border-color);
+  border-radius: var(--border-radius);
+  margin-bottom: 10px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  background: var(--card-bg);
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+}
+
+.track-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  border: none;
+  background: transparent;
+  color: var(--text-color);
+  font-family: "Courier New", "Lucida Console", Monaco, monospace;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  user-select: none;
+}
+
+/* Vertical divider between the two boxes */
+.track-box:first-child {
+  border-right: var(--border-thickness) solid var(--border-color);
+}
+
+/* Inactive / unlit track */
+.track-box:not(.track-box--active) {
+  opacity: 0.55;
+  color: var(--text-muted);
+  background: transparent;
+}
+
+.track-box:not(.track-box--active):hover,
+.track-box:not(.track-box--active):focus-visible {
+  opacity: 0.9;
+  background: rgba(59, 130, 246, 0.12);
+  color: var(--text-accent);
+}
+
+/* Active / lit track */
+.track-box--active {
+  opacity: 1;
+  background: rgba(59, 130, 246, 0.25);
+  color: #38bdf8;
+  box-shadow: inset 0 0 14px rgba(59, 130, 246, 0.35);
+}
+
+/* ==========================================================================
+   Supporting Panels Common Header (Right Column)
+   ========================================================================== */
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  background: var(--card-bg-elevated);
+  border-bottom: var(--border-thickness) solid var(--border-color);
+  font-family: "Courier New", "Lucida Console", Monaco, monospace;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--text-accent);
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.panel-header__title {
+  color: var(--text-accent);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   Clock Error Phasor Diagram (Top Supporting Panel)
+   ========================================================================== */
+.phasor-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  background: var(--canvas-bg, #04081a);
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.phasor-hud {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 10px;
+  background: rgba(11, 19, 38, 0.95);
+  border-bottom: var(--border-thickness) solid var(--border-color);
+  font-family: "Courier New", "Lucida Console", Monaco, monospace;
+  font-size: 9px;
+  color: var(--text-accent);
+  flex-shrink: 0;
+}
+
+.phasor-hud__val--active {
+  color: #ef4444;
+  font-weight: bold;
+}
+
+.phasor-canvas-wrapper {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 2px;
+  overflow: hidden;
+}
+
+.phasor-canvas {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  display: block;
+}
+
+.phasor-legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 4px 10px;
+  background: rgba(11, 19, 38, 0.92);
+  border-top: var(--border-thickness) solid var(--border-color);
+  font-family: "Courier New", "Lucida Console", Monaco, monospace;
+  font-size: 8.5px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.phasor-legend__item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  letter-spacing: 0.3px;
+}
+
+.phasor-legend__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.phasor-legend__dot--green {
+  background: #10b981;
+  box-shadow: 0 0 5px #10b981;
+}
+
+.phasor-legend__dot--red {
+  background: #ef4444;
+  box-shadow: 0 0 5px #ef4444;
+}
+
+/* ==========================================================================
+   Post-Predictive GNSS Triangulation (Lower Supporting Panel)
+   ========================================================================== */
+.gnss-panel-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  background: var(--canvas-bg, #04081a);
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.gnss-map-wrapper {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  overflow: hidden;
+  background: #04081a;
+}
+
+.gnss-cyan-map {
+  width: 100%;
+  height: 100%;
+  background: #04081a;
+}
+
+/* Translucent satellite image tiles */
+.translucent-satellite-tiles {
+  opacity: 0.68 !important;
+  filter: brightness(0.95) contrast(1.1);
+}
+
+.cyan-labels-layer {
+  opacity: 0.85 !important;
+  filter: hue-rotate(150deg) saturate(2);
+}
+
+/* Glowing center reticle crosshair overlay */
+.gnss-reticle-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gnss-reticle-ring {
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid #00f0ff;
+  border-radius: 50%;
+  box-shadow: 0 0 7px rgba(0, 240, 255, 0.75);
+}
+
+.gnss-reticle-line-h {
+  position: absolute;
+  width: 34px;
+  height: 1px;
+  background: rgba(0, 240, 255, 0.8);
+  box-shadow: 0 0 4px #00f0ff;
+}
+
+.gnss-reticle-line-v {
+  position: absolute;
+  width: 1px;
+  height: 34px;
+  background: rgba(0, 240, 255, 0.8);
+  box-shadow: 0 0 4px #00f0ff;
+}
+
+/* Dedicated space below map render for text & future graphjs stuff */
+.gnss-text-space {
+  flex-shrink: 0;
+  padding: 4px 8px;
+  background: rgba(4, 8, 26, 0.96);
+  border-top: var(--border-thickness) solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-family: "Courier New", "Lucida Console", Monaco, monospace;
+  font-size: 8.5px;
+  box-sizing: border-box;
+}
+
+.gnss-telemetry-row {
+  display: flex;
+  justify-content: space-between;
+  line-height: 1.2;
+}
+
+.gnss-telemetry-lbl {
+  color: var(--text-muted);
+}
+
+.gnss-telemetry-val {
+  color: #38bdf8;
+  font-weight: bold;
+}
+
+.gnss-future-slot {
+  text-align: center;
+  color: rgba(246, 255, 0, 0.55);
+  font-size: 7.5px;
+  letter-spacing: 0.4px;
+  border: 1px dashed rgba(59, 130, 246, 0.25);
+  padding: 1px 0;
+  margin-top: 1px;
+  user-select: none;
+}
+
+/* Centered map pin marker */
+.gnss-pin-container {
+  background: transparent !important;
+  border: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  pointer-events: none;
+}
+
+.gnss-map-pin {
+  width: 16px;
+  height: 16px;
+  border: 3px solid #f6ff00;
+  border-radius: 50% 50% 50% 0;
+  background: var(--text-accent);
+  box-shadow: 0 0 0 2px var(--bg-color), 0 0 8px #f6ff00;
+  transform: rotate(-45deg);
+  box-sizing: border-box;
+}
+
+/* Raw unamplified markers for deviated & corrected fixes */
+.gnss-marker-container {
+  background: transparent !important;
+  border: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  pointer-events: none;
+}
+
+.gnss-marker-deviated {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ef4444;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 8px #ef4444, 0 0 16px rgba(239, 68, 68, 0.7);
+  box-sizing: border-box;
+}
+
+.gnss-marker-corrected {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #10b981;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 8px #10b981, 0 0 14px rgba(16, 185, 129, 0.8);
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   Panel 2 Canvas HUD & Timeline Adaptations
+   ========================================================================== */
+.panel2-canvas-panel .canvas-top-bar {
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  gap: 6px;
+}
+
+.panel2-canvas-panel .canvas-hud {
+  padding: 3px 7px;
+  font-size: 10px;
+  gap: 6px;
+}
+
+.panel2-canvas-panel .canvas-hud__title {
+  font-size: 10px;
+}
+
+.panel2-canvas-panel .canvas-hud__legend {
+  font-size: 9px;
+  gap: 5px;
+}
+
+.panel2-canvas-panel .canvas-hud__coords {
+  font-size: 9.5px;
+}
+
+.panel2-canvas-panel .canvas-timer-hud {
+  padding: 3px 7px;
+  font-size: 10.5px;
+  gap: 4px;
+}
+
+@media (max-width: 1400px) {
+  .panel2-canvas-panel .canvas-hud__coords {
+    display: none;
+  }
+}
+
+.panel2-timeline-panel .timeline-container {
+  padding: 0 10px;
+  gap: 10px;
+}
+
+.panel2-timeline-panel .timeline-hint {
+  display: none;
+}
+
+.panel2-timeline-panel .timeline-errors {
+  gap: 6px;
+  font-size: 10px;
+}
+
+/* ==========================================================================
+   Triangulation Globe Component (Central Box)
+   ========================================================================== */
+.panel2-center-box {
+  position: relative;
+  overflow: hidden;
+}
+
+.triangulation-globe-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #00020a;
+}
+
+.triangulation-globe-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: hidden;
+}
+
+.triangulation-globe-iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+  background: #0d0f1a;
+}
+
+.triangulation-globe-canvas canvas {
+  display: block;
+  outline: none;
+}
+
+/* Orbit Speed Slider Control overlay matching provided image */
+.orbit-speed-control {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 14px;
+  background: rgba(10, 14, 26, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
+  user-select: none;
+  backdrop-filter: blur(4px);
+}
+
+.orbit-speed-label {
+  font-family: "Courier New", "Lucida Console", Monaco, monospace;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  color: #5a7288;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.orbit-speed-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 110px;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.22);
+  outline: none;
+  cursor: pointer;
+  margin: 0;
+  transition: background 0.2s;
+}
+
+.orbit-speed-slider:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.orbit-speed-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #d0d8e8;
+  border: 2.5px solid #1a2233;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+}
+
+.orbit-speed-slider::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #d0d8e8;
+  border: 2.5px solid #1a2233;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+}
+
+/* Floating satellite info plate */
+.globe-sat-plate {
+  position: absolute;
+  pointer-events: none;
+  z-index: 100;
+  padding: 7px 11px;
+  border-radius: 6px;
+  background: rgba(9, 13, 24, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+  font-family: "Courier New", "Lucida Console", Monaco, monospace;
+  min-width: 120px;
+}
+
+.globe-sat-plate__id {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.globe-sat-plate__sub {
+  font-size: 9px;
+  color: #5a7288;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.globe-sat-plate__class {
+  font-size: 9.5px;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.globe-sat-plate__sise {
+  font-size: 9.5px;
+  color: #38bdf8;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 3px;
+  margin-top: 3px;
+}
+
+/* Trilateration interactive HUD */
+.globe-hint {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 25;
+  padding: 5px 12px;
+  background: rgba(8, 14, 26, 0.85);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: 6px;
+  font-family: "Courier New", "Lucida Console", Monaco, monospace;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  color: var(--text-accent);
+  pointer-events: none;
+  user-select: none;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  white-space: nowrap;
+}
+
+.tril-hud {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  width: min(92%, 460px);
+  padding: 8px 12px;
+  background: rgba(9, 13, 24, 0.94);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: 8px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.7), 0 0 12px rgba(56, 189, 248, 0.15);
+  font-family: "Courier New", "Lucida Console", Monaco, monospace;
+  backdrop-filter: blur(6px);
+  user-select: none;
+}
+
+.tril-hud__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.tril-hud__steps {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tril-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  font-size: 9px;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.08);
+  color: #6a8296;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.25s ease;
+}
+
+.tril-dot--current {
+  background: #38bdf8;
+  color: #081229;
+  border-color: #38bdf8;
+  box-shadow: 0 0 8px #38bdf8;
+}
+
+.tril-dot--done {
+  background: rgba(56, 189, 248, 0.25);
+  color: #38bdf8;
+  border-color: #38bdf8;
+}
+
+.tril-hud__coords {
+  font-size: 10px;
+  color: #38bdf8;
+  font-weight: 600;
+}
+
+.tril-hud__close {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #8fa2b4;
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 11px;
+  cursor: pointer;
+  line-height: 1;
+  transition: all 0.15s ease;
+}
+
+.tril-hud__close:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+.tril-hud__msg {
+  font-size: 10px;
+  line-height: 1.35;
+  color: #d1e2ec;
+  margin: 0;
+}
+
+/* ── Panel 2 Lower Error Charts (Live Chart.js) ──────────── */
+.panel2-chart-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 6px 10px 6px 10px;
+  background: var(--card-bg);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.panel2-chart-hud {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 4px 10px;
+  margin: -6px -10px 4px -10px;
+  background: var(--card-bg-elevated);
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.panel2-chart-title {
+  font-family: "Courier New", "Lucida Console", Monaco, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  color: var(--text-accent);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.panel2-chart-values {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: "Courier New", "Lucida Console", Monaco, monospace;
+  font-size: 9.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text-color);
+}
+
+.panel2-chart-canvas-wrap {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.panel2-chart-canvas-wrap canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+.panel2-blank-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-height: 80px;
+  background: var(--card-bg);
+  box-sizing: border-box;
+}
+
+.panel2-blank-placeholder .placeholder-subtext {
+  font-family: "Courier New", "Lucida Console", Monaco, monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.panel2-chart-btn {
+  background: rgba(59, 130, 246, 0.15);
+  border: var(--border-thickness) solid var(--border-color);
+  color: var(--text-accent);
+  font-family: "Courier New", "Lucida Console", Monaco, monospace;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  letter-spacing: 0.4px;
+}
+
+.panel2-chart-btn:hover {
+  background: rgba(59, 130, 246, 0.35);
+  border-color: var(--border-color-glow);
+  color: #ffffff;
+  box-shadow: 0 0 6px rgba(59, 130, 246, 0.35);
+}
+
+
+
+
+

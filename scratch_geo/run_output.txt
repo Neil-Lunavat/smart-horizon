@@ -1,0 +1,151 @@
+==============================================================================
+GEO artefact study   train n=142   test n=69
+==============================================================================
+
+1. THE ARTEFACT IS REAL (descriptive, no model yet)
+   train median cos(v_i,v_i+1) = +0.143 | frac cos < -0.9 = 0.142 | large excursions k=20, consecutive-pair sign alternation = 0.737
+   test  median cos(v_i,v_i+1) = -0.229 | frac cos < -0.9 = 0.147 | large excursions k=24, consecutive-pair sign alternation = 1.000
+   test large-excursion sign(x) sequence: +-+-+-+-+-+-+-+-+-+-+-+-
+   -> in GEO_Test every one of the 24 large excursions flips sign relative
+      to the previous one (24/24, stable for thresholds 2x-3x median).
+      The pattern is not in doubt.
+
+2. IS THE FLIP LOCKED TO SAMPLE INDEX / TIMESTAMP? (it must be, to be usable)
+   train corr(v, (-1)^i)        = [-0.105 -0.058  0.037  0.031]
+         corr(v, minute parity) = [-0.107 -0.13  -0.03  -0.123]
+   test  corr(v, (-1)^i)        = [ 0.084  0.104 -0.112  0.029]
+         corr(v, minute parity) = [-0.06  -0.112  0.22  -0.058]
+   test: large-excursion row indices = [ 0  1  3  7 10 14 20 26 30 33 34 35 36 39 43 44 46 47 48 50 63 64 65 66]
+         their index parity          = [0 1 1 1 0 0 0 0 0 1 0 1 0 1 1 0 0 1 0 0 1 0 1 0]
+   -> the SIGN alternates over the large events, but neither the sign nor
+      WHICH rows are large is recoverable from the timestamp or the row
+      index. A shippable model sees only the schedule: the pattern is
+      observable but not predictable.
+
+3. BASELINES  (W is affine-invariant, so EVERY constant scores the same)
+------------------------------------------------------------------------
+                    variant      W_x      W_y      W_z    W_clk    W_avg      RMS                    note
+          zero (do nothing)   0.8654   0.8084   0.8736   0.5359   0.7708  14.9560                BASELINE
+                 train mean   0.8654   0.8084   0.8736   0.5359   0.7708  14.9481                constant
+               train median   0.8654   0.8084   0.8736   0.5359   0.7708  14.9511                constant
+           last train value   0.8654   0.8084   0.8736   0.5359   0.7708  14.9642                constant
+           ORACLE test mean   0.8654   0.8084   0.8736   0.5359   0.7708  14.9113 cheats, still identical
+ ORACLE perfect model x 0.9   0.8654   0.8084   0.8736   0.5359   0.7708   1.4956    90% accurate, cheats
+ORACLE perfect model x 0.99   0.8654   0.8084   0.8736   0.5359   0.7708   0.1496    99% accurate, cheats
+   W of the RAW TEST DATA itself is identical to predict-zero, by construction
+   (residual = 0 - v = -v, and W(-v) = W(v)).  Note the last two rows: a
+   cheating model that is 90% or 99% accurate scores EXACTLY the baseline W,
+   because a proportional residual is an affine map and W is affine-invariant.
+   Accuracy per se cannot move W at all on this file.
+
+4. AMPLITUDE FITTED ON GEO_TRAIN ONLY -> a = 3.25 (x train sd)
+
+4. SIGN-PATTERN MODELS
+----------------------
+                                   variant      W_x      W_y      W_z    W_clk    W_avg      RMS                       note
+                        parity a=1.0*sd_tr   0.9345   0.9176   0.9130   0.6551   0.8550  16.0279                 s_i=(-1)^i
+                        parity a=2.0*sd_tr   0.9592   0.9524   0.9529   0.7737   0.9096  19.0654                 s_i=(-1)^i
+          parity a=3.25*sd_tr TRAIN-FITTED   0.9356   0.9116   0.9228   0.8347   0.9012  24.4221     shippable in principle
+                 minute-parity a=2.0*sd_tr   0.9358   0.8888   0.9333   0.7535   0.8778  19.3688           timestamp-locked
+magnitude-only |pred|=median|v|_tr, sign=+   0.8654   0.8084   0.8736   0.5359   0.7708  14.9831      constant -> no change
+        ORACLE sign-propagated a=2.0*sd_tr   0.8936   0.9309   0.9433   0.7902   0.8895  16.8509       sign taken from TEST
+                     ORACLE pred = -v[i-1]   0.9288   0.9163   0.9635   0.6736   0.8706  17.9288 the artefact used directly
+                     ORACLE pred = +v[i-1]   0.9440   0.8928   0.9294   0.6580   0.8560  23.9026                     cheats
+
+5. CONTROL: does the SIGN SEQUENCE carry the gain, or is it just dither?
+   RANDOM +-1 sign, same amplitude  : W = 0.9003  [5-95% 0.8861 .. 0.9123]  (400 draws)
+   PARITY sign, same amplitude      : W = 0.9096   pctile of random = 88
+   ORACLE TRUE sign, same amplitude : W = 0.8895   pctile of random = 10
+   RANDOM -v[randperm]              : W = 0.8845  [5-95% 0.8505 .. 0.9075]
+   ORACLE -v[i-1] (real artefact)   : W = 0.8706   pctile of random = 20
+   -> the TRUE sign sequence does no better than a coin flip of the same
+      amplitude, and -v[i-1] does no better than -v[randperm]. Every bit of
+      the movement in W is AMPLITUDE, none of it is the sign structure.
+
+6. PURE DITHER SWEEP  pred = a * sd_train * N(0,1)   (uses no data at all)
+
+6. GAUSSIAN DITHER
+------------------
+              variant      W_x      W_y      W_z    W_clk    W_avg      RMS             note
+gaussian dither a=0.5   0.8934   0.8666   0.8736   0.6006   0.8085  15.4025 zero information
+  gaussian dither a=1   0.9347   0.9227   0.8954   0.6832   0.8590  16.4360 zero information
+  gaussian dither a=2   0.9737   0.9797   0.9450   0.8210   0.9298  19.7685 zero information
+  gaussian dither a=3   0.9815   0.9864   0.9704   0.9032   0.9604  24.1258 zero information
+  gaussian dither a=4   0.9800   0.9792   0.9816   0.9437   0.9711  29.0448 zero information
+  gaussian dither a=6   0.9794   0.9660   0.9862   0.9704   0.9755  39.7320 zero information
+  gaussian dither a=8   0.9827   0.9601   0.9868   0.9799   0.9774  50.9652 zero information
+ gaussian dither a=12   0.9854   0.9643   0.9891   0.9888   0.9819  74.0848 zero information
+   -> W rises monotonically to ~0.98 while RMS grows without bound. The
+      metric is driven arbitrarily high by a predictor that knows nothing.
+
+7. THE CEILING: an ORACLE that perfectly removes the systematic excursions
+
+7. ORACLE ARTEFACT REMOVAL  (upper bound on capturing the artefact)
+-------------------------------------------------------------------
+                                   variant      W_x      W_y      W_z    W_clk    W_avg      RMS              note
+ORACLE remove excursions >2x median (k=24)   0.8689   0.8959   0.7822   0.4454   0.7481   1.7776 cannot be shipped
+ORACLE remove excursions >3x median (k=24)   0.8689   0.8959   0.7822   0.4454   0.7481   1.7776 cannot be shipped
+ORACLE remove excursions >4x median (k=16)   0.7291   0.7131   0.8437   0.5151   0.7002   3.9651 cannot be shipped
+ORACLE remove excursions >6x median (k=12)   0.7995   0.7469   0.8094   0.5812   0.7342   5.3484 cannot be shipped
+              ORACLE shrink excursions 50%   0.9173   0.8557   0.9445   0.5507   0.8171   7.7106 cannot be shipped
+   -> Perfectly deleting all 24 systematic excursions cuts RMS 14.96 -> 1.78
+      (88% more accurate) and moves W THE WRONG WAY: 0.7708 -> 0.7481.
+      This is a BOUND: no legitimate model can remove the artefact better
+      than one handed the truth, and the truth-handed model LOWERS W.
+
+8. HETEROSCEDASTIC VARIANT (standardised residual r_i / sigma_i)
+   zero-predictor residual / ORACLE rolling-median |v| : W = 0.6333  per-ch [0.707 0.675 0.848 0.303]
+   INADMISSIBLE twice over: (a) sigma_i is built from the test values
+   themselves; (b) Note.pdf scores W on the residual (predicted - test) in
+   metres -- dividing by a self-chosen scale is not that residual, and any
+   sigma_i proportional to |r_i| drives W to 1 by construction.
+
+9. ROBUSTNESS OF THE APPARENT WINNERS
+
+9a. CONTIGUOUS SPLIT-HALF / SPLIT-THIRD  (dW = W_variant - W_zero)
+------------------------------------------------------------------
+                   variant      split  n   W_zero    W_var       dW
+parity a=3.25 TRAIN-FITTED 2-way blk1 34   0.7218   0.8808   0.1591
+parity a=3.25 TRAIN-FITTED 2-way blk2 35   0.7952   0.9060   0.1108
+parity a=3.25 TRAIN-FITTED 3-way blk1 23   0.7373   0.8895   0.1522
+parity a=3.25 TRAIN-FITTED 3-way blk2 23   0.7955   0.8875   0.0920
+parity a=3.25 TRAIN-FITTED 3-way blk3 23   0.7326   0.8809   0.1483
+              parity a=2.0 2-way blk1 34   0.7218   0.9188   0.1970
+              parity a=2.0 2-way blk2 35   0.7952   0.9155   0.1203
+              parity a=2.0 3-way blk1 23   0.7373   0.9339   0.1966
+              parity a=2.0 3-way blk2 23   0.7955   0.8760   0.0806
+              parity a=2.0 3-way blk3 23   0.7326   0.8955   0.1628
+       gaussian dither a=4 2-way blk1 34   0.7218   0.9758   0.2540
+       gaussian dither a=4 2-way blk2 35   0.7952   0.9547   0.1595
+       gaussian dither a=4 3-way blk1 23   0.7373   0.9643   0.2270
+       gaussian dither a=4 3-way blk2 23   0.7955   0.9335   0.1380
+       gaussian dither a=4 3-way blk3 23   0.7326   0.9422   0.2096
+  ORACLE remove excursions 2-way blk1 34   0.7218   0.9353   0.2135
+  ORACLE remove excursions 2-way blk2 35   0.7952   0.5933  -0.2019
+  ORACLE remove excursions 3-way blk1 23   0.7373   0.9327   0.1954
+  ORACLE remove excursions 3-way blk2 23   0.7955   0.7423  -0.0532
+  ORACLE remove excursions 3-way blk3 23   0.7326   0.6240  -0.1087
+
+9b. BOOTSTRAP OF THE PAIRED W DIFFERENCE (2000 resamples of the 69 rows)
+   parity a=3.25 TRAIN-FITTED     dW = +0.1264  95% CI [+0.0773, +0.1820]  P(dW>0) = 1.000
+   parity a=2.0                   dW = +0.1363  95% CI [+0.0830, +0.2002]  P(dW>0) = 1.000
+   gaussian dither a=4            dW = +0.1983  95% CI [+0.1247, +0.2904]  P(dW>0) = 1.000
+   ORACLE remove excursions       dW = -0.0031  95% CI [-0.1493, +0.1463]  P(dW>0) = 0.478
+
+==============================================================================
+VERDICT
+==============================================================================
+  baseline, any constant predictor            W = 0.7708  RMS  14.96
+  best legitimate variant (train-fitted       W = 0.9012  RMS  24.42
+    parity dither)   -- but section 5 shows a random sign sequence of the
+    same amplitude scores the same, so this is DITHER, not a model of the
+    artefact, and it costs 63% accuracy.
+  ORACLE that perfectly removes the artefact  W = 0.7481  RMS   1.78
+    -- 88% more accurate and LESS normal.
+
+  ANSWER TO THE RESEARCH QUESTION: NO. Capturing the systematic
+  sign-alternation artefact does not raise W on GEO_Test; done perfectly
+  it LOWERS it. W can only be raised on this file by inflating the
+  residual with noise, which no honest submission should do.
+  SHIP: nothing.  DO-NOT-SHIP: parity dither, gaussian dither,
+        standardised residuals.  See FINDINGS.md.

@@ -1,0 +1,21 @@
+rows 1,987,858   handover matched 100.0%
+train 1,391,489  test 526,757  split at 2026-06-17
+
+features                           dR                    dA                    dC                dClk_m
+                  raw -> corrected  %   raw -> corrected  %   raw -> corrected  %   raw -> corrected  %
+F0 geom         1.295 -> 0.374  71.1% 0.694 -> 0.658   5.2% 0.498 -> 0.448  10.0% 7.046 -> 6.787   3.7%
+F1 +handover    1.295 -> 0.235  81.8% 0.694 -> 0.638   8.0% 0.498 -> 0.443  11.1% 7.046 -> 6.700   4.9%
+F2 +lagbias     1.295 -> 0.157  87.9% 0.694 -> 0.595  14.2% 0.498 -> 0.424  14.7% 7.046 -> 2.239  68.2%
+F3 +recent      1.295 -> 0.041  96.8% 0.694 -> 0.158  77.2% 0.498 -> 0.151  69.8% 7.046 -> 0.828  88.2%
+
+top gain, F2 model on dR:
+lb_dR          69.1
+ho_R_s7         9.4
+sys_c           6.4
+cls_c           5.2
+ho_C_s7         2.2
+ho_A_s7         2.0
+ho_clk_m_s7     1.8
+r_km            1.5
+ho_A_m7         1.3
+ho_C_m7         1.1

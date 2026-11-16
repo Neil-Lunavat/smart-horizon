@@ -1,0 +1,8 @@
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+node_modules/
+raw/
+*.parquet
+*.npz
+*_day8.csv
