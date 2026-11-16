@@ -1,5 +1,7 @@
 # Hybrid Physics-Informed Forecasting
 
+### [Interactive demo: break the model yourself](https://neil-lunavat.github.io/smart-horizon/)
+
 ### [Presentation deck and demo video (Google Drive)](https://drive.google.com/drive/folders/1ua1AiKySnGl7Wt33RzyJdwDGcEIiU0Zl?usp=sharing)
 
 **Problem SH-DST-03.** Given seven days of a GNSS satellite's position and clock
@@ -88,7 +90,8 @@ uv run python figures/make_figures.py  # all 22 figures
 
 ## Try it yourself
 
-Open **[`interactive.html`](interactive.html)** in any browser. No install, no server.
+**[Open the interactive demo](https://neil-lunavat.github.io/smart-horizon/)** in your browser. No install, no server.
+The same page is [`index.html`](index.html) in this repo.
 
 Four presets, each a claim about the _data_ rather than the model:
 

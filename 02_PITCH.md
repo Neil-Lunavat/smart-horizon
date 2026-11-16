@@ -314,4 +314,4 @@ we are the team that measured that in advance.**
 | **Their GEO**    | unpredictable, and we prove it three separate ways                         |
 | **Their metric** | rewards noise, blind to accuracy, mostly luck at n = 6                     |
 
-**Live demo:** `interactive.html` — move the sliders and break the model yourself.
+**Live demo:** `index.html` — move the sliders and break the model yourself.
