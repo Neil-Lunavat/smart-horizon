@@ -357,7 +357,7 @@ Act 4.
 
 ## 3.5 Try it yourself
 
-`index.html` is a live sandbox: sliders for noise, coverage, corruption, signal
+`interactive.html` is a live sandbox: sliders for noise, coverage, corruption, signal
 strength and orbit class, with the day-8 prediction redrawn as you move them. It runs
 the same algorithm in the browser. Setting the artefact slider to 10% reproduces the
 GEO failure in front of you.
@@ -606,6 +606,6 @@ uv run python predict.py data/DATA_MEO_Train2.csv --orbit MEO
 | `sw_score.py`             | the competition's metric, reverse-engineered and calibrated |
 | `clean.py`                | loading and cleaning any 7-day file, delivered or not       |
 | `PHYSICS.md`              | the derivations, with every equation explained              |
-| `index.html`        | the live sandbox                                            |
+| `interactive.html`        | the live sandbox                                            |
 | `STAGE_04.ipynb`          | the whole analysis as a runnable notebook                   |
 | `pyproject.toml`          | the pinned environment, managed by `uv`                     |

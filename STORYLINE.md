@@ -89,7 +89,7 @@ the reduced version for the presentation.
 | 40 | The model used here was **never fitted to the synthetic test set**. Its design was fixed on separate generated data before these windows were drawn. | 📋 |
 | 41 | **Stress test — noise.** Quadrupling the measurement noise costs only a few points; the model holds ~50% improvement from noise 0.01 m to 0.40 m and still gives 35% at 1.0 m. | 📊 `f12` ⭐ |
 | 42 | **Stress test — the artefact.** Corrupting even one row in ten sends the model *below useless*, from +51% to −288%. | 📊 `f12` ⭐ |
-| 43 | **The interactive demo.** Sliders for noise, corruption, gaps and orbit class, showing live what happens to the day-8 prediction. Lets a judge break the model themselves. | 🖥️ `index.html` ⭐ |
+| 43 | **The interactive demo.** Sliders for noise, corruption, gaps and orbit class, showing live what happens to the day-8 prediction. Lets a judge break the model themselves. | 🖥️ `interactive.html` ⭐ |
 
 ---
 
